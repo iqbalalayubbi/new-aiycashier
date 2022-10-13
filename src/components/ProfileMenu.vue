@@ -11,7 +11,7 @@
             Profile
           </a>
         </li>
-        <li><a>Logout</a></li>
+        <li @click="this.$router.push({ path: '/login', replace: true })"><a>Logout</a></li>
       </ul>
     </div>
 </template>

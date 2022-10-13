@@ -13,8 +13,8 @@
          <Input nama="password" type="password"/>
          <Input nama="confirmasi password" type="password"/>
       </div>
-      <button class="btn mt-5 bg-color1 border-color1 hover:bg-color2 hover:border-color2">Buat Akun</button>
-      <p class="text-center mt-3">Sudah memiliki akun ? <span class="font-bold" @click="this.$router.push('/login')">Masuk</span></p>
+      <button class="btn mt-5 bg-color1 border-color1 hover:bg-color2 hover:border-color2" @click="clickBtn('buat')">Buat Akun</button>
+      <p class="text-center mt-3">Sudah memiliki akun ? <span class="font-bold hover:cursor-pointer hover:text-color1" @click="this.$router.push('/login')">Masuk</span></p>
    </div>
    <img src="../assets/ilustrasi2.svg" alt="" class="absolute right-20 top-40 w-1/3 lg:block hidden">
 </div>
@@ -24,7 +24,22 @@
 import Input from '@/components/Input.vue'
 
 export default {
-    components:{Input}
+    components:{Input},
+    methods:{
+      clickBtn(menu){
+         if (menu == 'buat'){
+            this.$swal.fire({
+               position: 'center',
+               icon: 'success',
+               title: 'akun berhasil dibuat',
+               showConfirmButton: false,
+               timer: 1500
+            }).then(() => {
+               this.$router.push('/login')
+            })
+         }
+      }
+    }
 }
 </script>
 

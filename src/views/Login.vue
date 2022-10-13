@@ -11,8 +11,8 @@
             <h1 class="text-4xl font-bold self-center" >Masuk</h1>
             <Input nama="username" type="text"/>
             <Input nama="password" type="password"/>
-            <button class="btn mt-5 bg-color1 border-color1 hover:bg-color2 hover:border-color2" @click="this.$router.push('/dashboard')">Masuk</button>
-            <p class="text-center mt-3">Belum memiliki akun ? <span class="font-bold" @click="this.$router.push('/register')">Daftar</span></p>
+            <button class="btn mt-5 bg-color1 border-color1 hover:bg-color2 hover:border-color2" @click="clickBtn('masuk')">Masuk</button>
+            <p class="text-center mt-3">Belum memiliki akun ? <span class="font-bold hover:cursor-pointer hover:text-color1" @click="this.$router.push('/register')">Daftar</span></p>
         </div>
     </div>
     <div class="bg-color1 w-1/2 h-full lg:flex items-center justify-center hidden">
@@ -25,7 +25,14 @@
 import Input from '@/components/Input.vue'
 
 export default {
-    components:{Input}
+    components:{Input},
+    methods:{
+        clickBtn(menu){
+            if (menu == 'masuk'){
+                this.$router.push('/shop/data')
+            }
+        }
+    }
 }
 </script>
 
