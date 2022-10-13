@@ -10,7 +10,7 @@
                 <button class="btn bg-transparent border-[1px] border-white hover:bg-blue-600 hover:border-blue-600 mt-5">Buat Akun</button>
             
             </router-link>
-            <img src="../assets/ilustrasi.svg" alt="" class="absolute lg:right-40 bottom-0 right-0 lg:top-40 lg:w-[400px] w-1/2">
+            <img src="../assets/ilustrasi.svg" alt="" class="absolute lg:right-40 bottom-0 right-0 lg:top-40 lg:w-[400px] w-3/4">
         </div>
     </div>
 </template>

@@ -6,18 +6,18 @@
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16" /></svg>
       </label>
       <ul tabindex="0" class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52 text-black">
-        <li><a>Beranda</a></li>
-        <li><a>Fitur</a></li>
-        <li><a>Tentang</a></li>
+        <li @click="menuMobile('beranda')"><a>Beranda</a></li>
+        <li @click="menuMobile('fitur')"><a>Fitur</a></li>
+        <li @click="menuMobile('tentang')"><a>Tentang</a></li>
       </ul>
     </div>
       <img :src="src" ref="logo" alt="" width="120" class="ml-5 lg:block hidden">
   </div>
   <div class="navbar-center hidden lg:flex">
-    <ul class="menu menu-horizontal p-0">
-        <li><a>Beranda</a></li>
-        <li><a>Fitur</a></li>
-        <li><a>Tentang</a></li>
+    <ul class="menu menu-horizontal p-0" >
+        <li @click="clickMenu('beranda')"><a>Beranda</a></li>
+        <li @click="clickMenu('fitur')"><a>Fitur</a></li>
+        <li @click="clickMenu('tentang')"><a>Tentang</a></li>
     </ul>
   </div>
   <div class="navbar-end flex gap-2 lg:gap-5">
@@ -53,6 +53,12 @@ export default {
           this.isScroll = false
           this.src = this.logo.logoWhite
         }
+    },
+    clickMenu(menu){
+      this.$emit('clickMenu',menu)
+    },
+    menuMobile(menu){
+      this.$emit('menuMobile',menu)
     }
   },
   created(){

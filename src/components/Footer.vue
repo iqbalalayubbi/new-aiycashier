@@ -14,16 +14,21 @@
   </div>
   <div>
     <span class="footer-title">Menu</span> 
-    <a class="link link-hover">Beranda</a>
-    <a class="link link-hover">Fitur</a>
-    <a class="link link-hover">Tentang</a>
+    <a class="link link-hover" @click="clickMenu('beranda')">Beranda</a>
+    <a class="link link-hover" @click="clickMenu('fitur')">Fitur</a>
+    <a class="link link-hover" @click="clickMenu('tentang')">Tentang</a>
   </div> 
 </footer>
 </template>
 
 <script>
 export default {
-    name:'Footer-Comp'
+    name:'Footer-Comp',
+    methods:{
+      clickMenu(menu){
+        this.$emit('clickMenu',menu)
+      }
+    }
 }
 </script>
 

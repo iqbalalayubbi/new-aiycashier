@@ -1,12 +1,12 @@
 <template>
   <div>
-    <Navbar class="fixed top-0 transition-all duration-300" :class="[isScroll ? 'bg-base-300 z-10' : 'bg-transparent text-white']"/>
+    <Navbar class="fixed top-0 transition-all duration-300" :class="[isScroll ? 'bg-base-300 z-10' : 'bg-transparent text-white']" @clickMenu="clickMenu" @menuMobile="menuMobile"/>
     <Beranda/>
-    <DataApp class="lg:mt-96 mt-60"/>
-    <Fitur class="mt-40"/>
+    <DataApp class="lg:mt-96 mt-96"/>
+    <Fitur class="lg:mt-40 mt-20" id="fitur"/>
     <CardFitur class="mt-10"/>
-    <Tentang class="mt-40"/>
-    <Footer class="mt-40"/>
+    <Tentang class="mt-40" id="tentang"/>
+    <Footer class="mt-40" @clickMenu="clickMenu"/>
   </div>
 </template>
 
@@ -25,6 +25,22 @@ export default {
     methods:{
         onScroll(){
             window.scrollY > 300 ? this.isScroll = true : this.isScroll = false
+        },
+        clickMenu(menu){
+            let top
+            const behavior = 'smooth'
+            if (menu == 'beranda')top = 0
+            if (menu == 'fitur')top = 937
+            if (menu == 'tentang')top = 1414
+            window.scrollTo({top,behavior})
+        },
+        menuMobile(menu){
+            let top
+            const behavior = 'smooth'
+            if (menu == 'beranda')top = 0
+            if (menu == 'fitur')top = 900
+            if (menu == 'tentang')top = 1600
+            window.scrollTo({top,behavior})
         }
     },
     created(){

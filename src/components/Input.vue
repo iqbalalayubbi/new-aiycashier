@@ -1,7 +1,7 @@
 <template>
     <div class="flex flex-col">
         <label for="">{{nama}}</label>
-        <input :type="type" class="border-2 border-color1 rounded-md h-10 indent-3">
+        <input :type="type" class="border-2 border-color1 rounded-md h-10 indent-3" :placeholder="placeholder">
     </div>
 </template>
 
@@ -9,7 +9,8 @@
 export default {
     props:{
         nama:String,
-        type:String
+        type:String,
+        placeholder:String
     }
 }
 </script>
