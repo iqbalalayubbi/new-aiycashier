@@ -9,8 +9,8 @@
                 <img src="../assets/logo-black.png" alt="" class="lg:hidden w-40 self-center mb-10">
             </router-link>
             <h1 class="text-4xl font-bold self-center" >Masuk</h1>
-            <Input nama="username" type="text"/>
-            <Input nama="password" type="password"/>
+            <Input nama="username" type="text" @onInput="onInput($event,'username')"/>
+            <Input nama="password" type="password" @onInput="onInput($event,'password')"/>
             <button class="btn mt-5 bg-color1 border-color1 hover:bg-color2 hover:border-color2" @click="clickBtn('masuk')">Masuk</button>
             <p class="text-center mt-3">Belum memiliki akun ? <span class="font-bold hover:cursor-pointer hover:text-color1" @click="this.$router.push('/register')">Daftar</span></p>
         </div>
@@ -23,14 +23,65 @@
 
 <script>
 import Input from '@/components/Input.vue'
+import axios from 'axios'
 
 export default {
+    data(){
+        return{
+            password:'',
+            username:''
+        }
+    },
     components:{Input},
     methods:{
-        clickBtn(menu){
+        async clickBtn(menu){
             if (menu == 'masuk'){
-                this.$router.push('/shop/data')
+                try {
+                    const result = await this.login
+                    const data = result.data
+                    this.$swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        title: data.status,
+                        text:data.msg,
+                        showConfirmButton: false,
+                        timer: 2000
+                    }).then(() => {
+                        localStorage.setItem('token',JSON.stringify(data.token))
+                        if (data.isNew){
+                            this.$router.push('/shop/data')
+                        }else{
+                            
+                            this.$router.push('/dashboard')
+                        }
+                    })
+                } catch (error) {
+                    const data = error.response.data
+                    this.$swal.fire({
+                        position: 'center',
+                        icon: 'error',
+                        title: data.status,
+                        text:data.msg,
+                        showConfirmButton: false,
+                        timer: 2000
+                    }).then(() => {
+                        this.$router.push('/login')
+                    })
+                }
             }
+        },
+        onInput(val,name){
+            if(name == 'username') this.username = val
+            else this.password = val
+        }
+    },
+    computed:{
+       async login(){
+            const result = await axios.post('https://aiycashier.herokuapp.com/login',{
+                username:this.username,
+                password:this.password
+            })
+            return result
         }
     }
 }

@@ -23,10 +23,15 @@
                 </div>
             </div>
             <div class="w-1/3 flex flex-col gap-3 mt-10">
-                <Input nama="username" type="text"/>
-                <Input nama="password" type="password"/>
-                <button class="btn mt-5 w-full bg-color1 border-color1 hover:bg-color2 hover:border-color2" @click="this.$router.go(-1)">Simpan</button> 
-                <button class="btn w-full" @click="this.$router.go(-1)">Kembali</button> 
+                <Input nama="username" type="text" ref="username"/>
+                <Input nama="password" type="password" ref="password"/>
+                <select class="select border-color1 mt-3 focus:outline-color1" ref="role">
+                    <option disabled selected>role</option>
+                    <option>kasir</option>
+                    <option>pengelola</option>
+                </select>
+                <button class="btn mt-5 w-full bg-color1 border-color1 hover:bg-color2 hover:border-color2" @click="clickBtn('simpan')">Simpan</button> 
+                <button class="btn w-full" @click="clickBtn('kembali')">Kembali</button> 
             </div>
 
         </div>
@@ -36,10 +41,39 @@
 <script>
 import Navbar from '@/components/Navbar.vue'
 import Input from '@/components/Input.vue'
+import axios from 'axios'
 
 export default {
     components:{Navbar,Input},
-}
+    methods:{
+        clickBtn(menu){
+            if (menu == 'simpan'){
+                const ref = this.$refs
+                const username = ref.username.$refs.input.value
+                const password = ref.password.$refs.input.value
+                const role = this.$refs.role.value
+    
+                const token = JSON.parse(localStorage.getItem('token'))
+                axios.post(`https://aiycashier.herokuapp.com/employe/${token}`,{
+                    username,password,role
+                }).then(res => {
+                    const result = res.data
+                    if (result.isSuccess){
+                        this.$swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        title: result.status,
+                        text:result.msg,
+                        showConfirmButton: false,
+                        timer: 2000
+                    }).then(() => this.$router.push('/employe'))
+                    }
+                })
+
+            }
+        }
+    }
+}   
 </script>
 
 <style>

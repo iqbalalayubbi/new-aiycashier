@@ -17,6 +17,7 @@
 import Chart from 'chart.js/auto'
 import Navbar from '@/components/Navbar.vue'
 import NavMobile from '@/components/NavMobile.vue'
+import axios from 'axios'
 
 export default {
     components:{Navbar,NavMobile},
@@ -57,6 +58,16 @@ export default {
             }
         });
         myChart
+    },
+    created(){
+        const token = JSON.parse(localStorage.getItem('token'))
+        axios.get(`http://localhost:3000/${token}`).then(res => {
+            const data = res.data.data
+            const role = data.role
+            if (role == 'kasir') {
+                this.$router.push('/dashboard')
+            }
+        })
     }
 }
 </script>

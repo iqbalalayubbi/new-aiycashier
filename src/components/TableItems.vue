@@ -15,7 +15,7 @@
     </thead>
     <tbody>
       <!-- row 1 -->
-      <tr>
+      <tr v-for="(item,i) in items" :key="i">
         <td>
           <div class="flex items-center space-x-3">
             <div class="avatar">
@@ -24,15 +24,15 @@
               </div>
             </div>
             <div>
-              <div class="font-bold">coca cola</div>
+              <div class="font-bold">{{item.nama}}</div>
             </div>
           </div>
         </td>
-        <td>minuman</td>
-        <td>btl</td>
-        <td>5000</td>
-        <td>6000</td>
-        <td>20</td>
+        <td>{{item.kategori}}</td>
+        <td>{{item.satuan}}</td>
+        <td>{{item.modal}}</td>
+        <td>{{item.harga}}</td>
+        <td>{{item.stok}}</td>
         <th>
           <button class="btn btn-ghost btn-xs">details</button>
         </th>
@@ -44,7 +44,9 @@
 
 <script>
 export default {
-
+  props:{
+    items:String
+  }
 }
 </script>
 

@@ -16,7 +16,7 @@
                 </ul>
             </div>
 
-            <TableItems class="w-[90%] lg:w-3/4 mt-10"/>
+            <TableItems class="w-[90%] lg:w-3/4 mt-10" :items="items"/>
 
             <button class="btn mt-10 w-1/2 bg-color1 border-color1 hover:bg-color2 hover:border-color2" @click="this.$router.push('items/add')">Tambah Barang</button> 
 
@@ -28,31 +28,44 @@
 import Navbar from '@/components/Navbar.vue'
 import TableItems from '@/components/TableItems.vue'
 import NavMobile from '@/components/NavMobile.vue'
+import axios from 'axios'
 
 export default {
     data(){
         return{
             isInput:false,
-            items:['choco','gery','minyak'],
-            data:['choco','gery','minyak'],
+            items:[],
+            data:[],
         }
     },
     components:{Navbar,TableItems,NavMobile},
     methods:{
         onInput(e){
             const val = e.target.value
-
-            if (val == '') return this.isInput = false
-            const itemFound = []
+            const found = []
             this.data.forEach(item => {
-                if (item.startsWith(val)){
-                    itemFound.push(item)
+                if (item.nama.startsWith(val)){
+                    found.push(item)
                 }
             })
-            this.items = itemFound
-            this.isInput = true
-            this.notFound = false
+            this.items = found
         }
+    },
+    created(){
+        const token = JSON.parse(localStorage.getItem('token'))
+        axios.get(`https://aiycashier.herokuapp.com/${token}`).then(res => {
+            const data = res.data.data
+            const role = data.role
+            if (role == 'kasir') {
+                this.$router.push('/dashboard')
+            }
+        })
+
+        axios.get(`https://aiycashier.herokuapp.com/items/${token}`).then(res => {
+            const items = res.data.data
+            this.items = items
+            this.data = items
+        })
     }
 }
 </script>

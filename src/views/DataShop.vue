@@ -9,10 +9,10 @@
                 <img src="../assets/logo-black.png" alt="" class="lg:hidden w-40 self-center mb-10">
             </router-link>
             <h1 class="text-4xl font-bold self-center">Buka Toko Baru</h1>
-            <Input nama="username" type="text"/>
-            <Input nama="nama toko" type="text"/>
-            <Input nama="alamat" type="text"/>
-            <button class="btn mt-5 bg-color1 border-color1 hover:bg-color2 hover:border-color2" @click="this.$router.push('/dashboard')">Masuk</button>
+            <Input nama="username" type="text" ref="username"/>
+            <Input nama="nama toko" type="text" ref="nama"/>
+            <Input nama="alamat" type="text" ref="alamat"/>
+            <button class="btn mt-5 bg-color1 border-color1 hover:bg-color2 hover:border-color2" @click="clickBtn()">Masuk</button>
         </div>
     </div>
   </div>
@@ -20,11 +20,33 @@
 
 <script>
 import Input from '@/components/Input.vue'
+import axios from 'axios'
 
 export default {
     components:{Input},
-    created(){
-        
+    methods:{
+        clickBtn(){
+            const ref = this.$refs
+            const username = ref.username.$refs.input.value
+            const nama = ref.nama.$refs.input.value
+            const alamat = ref.alamat.$refs.input.value
+            const token = JSON.parse(localStorage.getItem('token'))
+            axios.post(`http://localhost:3000/shop/${token}`,{
+                username,nama,alamat
+            }).then(res => {
+                const result = res.data
+                console.log(result)
+                if (result.isSuccess){
+                    this.$swal.fire(
+                        'Toko Behasil Dibuat',
+                        'Mulailah atur tokomu dengan baik',
+                        'success'
+                    ).then(res => {
+                        this.$router.push('/dashboard')
+                    })
+                }
+            })
+        }
     }
 }
 </script>

@@ -24,18 +24,18 @@
             </div>
             <div class="flex w-3/4 justify-center gap-5">
                 <div class="w-1/3 flex flex-col gap-3 mt-10">
-                    <Input nama="nama Barang"/>
-                    <Input nama="kategori"/>
-                    <Input nama="satuan"/>
+                    <Input nama="nama Barang" ref="nama"/>
+                    <Input nama="kategori" ref="kategori"/>
+                    <Input nama="satuan" ref="satuan"/>
                 </div>
                 <div class="w-1/3 flex flex-col gap-3 mt-10">
-                    <Input nama="modal"/>
-                    <Input nama="harga"/>
-                    <Input nama="stok"/>
+                    <Input nama="modal" ref="modal"/>
+                    <Input nama="harga" ref="harga"/>
+                    <Input nama="stok" ref="stok"/>
                 </div>
             </div>
-            <button class="btn mt-5 w-1/3 bg-color1 border-color1 hover:bg-color2 hover:border-color2" @click="this.$router.go(-1)">Simpan</button> 
-            <button class="btn w-1/3 mt-5" @click="this.$router.go(-1)">Kembali</button> 
+            <button class="btn mt-5 w-1/3 bg-color1 border-color1 hover:bg-color2 hover:border-color2" @click="clickBtn('simpan')">Simpan</button> 
+            <button class="btn w-1/3 mt-5" @click="clickBtn('kembali')">Kembali</button> 
         </div>
     </div>
 </template>
@@ -43,9 +43,40 @@
 <script>
 import Navbar from '@/components/Navbar.vue'
 import Input from '@/components/Input.vue'
+import axios from 'axios'
 
 export default {
     components:{Navbar,Input},
+    methods:{
+        clickBtn(btn){
+            const token = JSON.parse(localStorage.getItem('token'))
+            if(btn == 'simpan'){
+                const ref = this.$refs
+                const nama = ref.nama.$refs.input.value
+                const kategori = ref.kategori.$refs.input.value
+                const satuan = ref.satuan.$refs.input.value
+                const modal = ref.modal.$refs.input.value
+                const harga = ref.harga.$refs.input.value
+                const stok = ref.stok.$refs.input.value
+
+                axios.post(`https://aiycashier.herokuapp.com/items/${token}`,{
+                    nama,kategori,satuan,modal,harga,stok
+                }).then(res => {
+                    const data = res.data
+                    this.$swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        title: data.status,
+                        text:data.msg,
+                        showConfirmButton: false,
+                        timer: 500
+                    }).then(() => {
+                        this.$router.push('/items')
+                    })
+                })
+            }
+        }
+    }
 }
 </script>
 

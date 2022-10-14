@@ -7,7 +7,7 @@
             <div class="flex items-center mt-10 flex-col ">
 
                 <div class="border-color1 lg:mt-0 mt-10 border-2 lg:w-1/2 w-[70%] h-16 lg:h-28 rounded-xl flex justify-end items-center px-5">
-                    <h1 class="text-xl lg:text-4xl text-color1">Rp50.000</h1>
+                    <h1 class="text-xl lg:text-4xl text-color1">Rp{{total}}</h1>
                 </div>
 
                 <div class="form-control mt-10 lg:w-1/2 w-3/4">
@@ -35,6 +35,11 @@ import TableCash from '@/components/TableCash.vue'
 import NavMobile from '@/components/NavMobile.vue'
 
 export default {
+    data(){
+        return{
+            total:0
+        }
+    },
     components:{Navbar,Input,TableCash,NavMobile},
 }
 </script>

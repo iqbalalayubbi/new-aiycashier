@@ -23,9 +23,20 @@ import Input from '@/components/Input.vue'
 import ProfileMenu from '@/components/ProfileMenu.vue'
 import TableEmploye from '@/components/TableEmploye.vue'
 import NavMobile from '@/components/NavMobile.vue'
+import axios from 'axios'
 
 export default {
     components:{Navbar,Input,ProfileMenu,TableEmploye,NavMobile},
+    created(){
+        const token = JSON.parse(localStorage.getItem('token'))
+        axios.get(`https://aiycashier.herokuapp.com/${token}`).then(res => {
+            const data = res.data.data
+            const role = data.role
+            if (role == 'kasir' || role == 'pengelola') {
+                this.$router.push('/dashboard')
+            }
+        })
+    }
 }
 </script>
 

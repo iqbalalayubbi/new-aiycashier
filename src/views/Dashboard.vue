@@ -48,13 +48,6 @@ export default {
                 }
             ]
         }
-    },
-    created(){
-        this.$swal.fire(
-            'Toko Behasil Dibuat',
-            'Mulailah atur tokomu dengan baik',
-            'success'
-        )
     }
 }
 </script>

@@ -26,9 +26,20 @@
 import Navbar from '@/components/Navbar.vue'
 import Input from '@/components/Input.vue'
 import NavMobile from '@/components/NavMobile.vue'
+import axios from 'axios'
 
 export default {
     components:{Navbar,Input,NavMobile},
+    created(){
+        const token = JSON.parse(localStorage.getItem('token'))
+        axios.get(`https://aiycashier.herokuapp.com/${token}`).then(res => {
+            const data = res.data.data
+            const role = data.role
+            if (role == 'kasir' || role == 'pengelola') {
+                this.$router.push('/dashboard')
+            }
+        })
+    }
 }
 </script>
 
