@@ -31,7 +31,7 @@ export default {
             const nama = ref.nama.$refs.input.value
             const alamat = ref.alamat.$refs.input.value
             const token = JSON.parse(localStorage.getItem('token'))
-            axios.post(`http://localhost:3000/shop/${token}`,{
+            axios.post(`https://aiycashier.herokuapp.com/shop/${token}`,{
                 username,nama,alamat
             }).then(res => {
                 const result = res.data
