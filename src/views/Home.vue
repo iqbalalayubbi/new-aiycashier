@@ -7,6 +7,7 @@
     <CardFitur class="mt-10"/>
     <Tentang class="mt-40" id="tentang"/>
     <Footer class="mt-40" @clickMenu="clickMenu"/>
+  
   </div>
 </template>
 

@@ -2,7 +2,7 @@
     <div class="flex">
         <Navbar/>
         <NavMobile/>
-        <div class="lg:w-full w-screen">
+        <div class="lg:w-full w-screen relative">
             <!-- content -->
             <div class="flex items-center mt-10 flex-col ">
 
@@ -13,18 +13,23 @@
                 <div class="form-control mt-10 lg:w-1/2 w-3/4">
                     <div class="input-group w-full">
                         <input type="text" placeholder="Cari Barang…" class="input input-bordered w-full" />
-                        <button class="btn btn-square bg-color1 border-color1 hover:bg-color2 hover:border-color2">
+                        <button class="btn btn-square bg-color1 border-color1 hover:bg-color2 hover:border-color2" @click="chooseItem = true">
                             <Icon icon="akar-icons:search"  class="text-xl"/>
                         </button>
                     </div>
                 </div>
 
-                <TableCash class="mt-5 w-3/4"/>
+                <TableCash ref="table" :items="dataTableItems" class="mt-5 w-3/4" @calItem="calItem" @removeItem="removeItem"/>
 
-                <button class="btn mt-10 w-3/4 lg:w-1/2 bg-color1 border-color1 hover:bg-color2 hover:border-color2">Bayar</button> 
+                <button class="btn mt-10 w-3/4 lg:w-1/2 bg-color1 border-color1 hover:bg-color2 hover:border-color2" @click="clickPay">Bayar</button> 
             </div>
 
+            <ChoosePay v-show="isChoosePay" class="absolute top-20 w-full z-10" @choosePay="choosePay"/>
+            <Pay v-show="isPay" class="absolute top-20 w-full z-10" @paySuccess="paySuccess"/>
+
         </div>
+        <div v-show="isPopup" class="w-screen absolute top-0 left-0 h-screen bg-black opacity-50 z-0" @click="cancelPay"></div>
+        <PopupItems :items="items" v-show="chooseItem" class="absolute w-screen h-screen" @clickBg="this.chooseItem = false" @clickItem="clickItem"/>
     </div>
 </template>
 
@@ -33,14 +38,102 @@ import Navbar from '@/components/Navbar.vue'
 import Input from '@/components/Input.vue'
 import TableCash from '@/components/TableCash.vue'
 import NavMobile from '@/components/NavMobile.vue'
+import PopupItems from '@/components/PopupItems.vue'
+import ChoosePay from '@/components/ChoosePay.vue'
+import Pay from '@/components/Pay.vue'
+import axios from 'axios'
 
 export default {
     data(){
         return{
-            total:0
+            total:0,
+            chooseItem:false,
+            items:[],
+            dataItems:[],
+            dataTableItems:[], 
+            itemsId:[],
+            isPay:false,
+            isChoosePay:false,
+            isPopup:false
         }
     },
-    components:{Navbar,Input,TableCash,NavMobile},
+    methods:{
+        clickItem(item){
+            if (this.itemsId.includes(item.id)){
+                // sudah ada 
+                const items = this.$refs.table.$refs.item
+                const id = item.id
+                items.forEach(el => {
+                    if(el.getAttribute('data-id') == id){
+                        const child = el.children
+                        const total = child[6]
+                        const count = child[5].children[0]
+                        const prize = child[4]
+                        count.value ++
+                        const jumlah = parseInt(count.value) * parseInt(prize.innerHTML)
+                        total.innerHTML = jumlah
+                    }
+                })
+            }else{
+                // belum ada
+                this.dataTableItems.push(item)
+                this.itemsId.push(item.id)
+            }
+            this.chooseItem = false
+        },
+        calItem(total){
+            this.total = total
+        },
+        removeItem(id){
+            this.dataTableItems.forEach((item,i) => {
+                if(item.id == id){
+                    this.dataTableItems.splice(i,1)
+                    this.itemsId.splice(i,1)
+                }
+            })
+        },
+        choosePay(type){
+            this.isPopup = true
+            this.isChoosePay = false
+            this.isPay = true
+        },
+        clickPay(){
+            this.isPopup = true
+            this.isChoosePay = true
+            this.isPay = false
+        },
+        paySuccess(){
+            this.isPopup = false
+            this.isChoosePay = false
+            this.isPay = false
+        },
+        cancelPay(){
+            this.isPopup = false
+            this.isChoosePay = false
+            this.isPay = false
+        }
+    },
+    components:{Navbar,Input,TableCash,NavMobile,PopupItems,ChoosePay,Pay},
+    created(){
+        const token = JSON.parse(localStorage.getItem('token'))
+        axios.get(`https://aiycashier.herokuapp.com/items/${token}`)
+            .then(res => {
+                const items = res.data.data
+                this.items = items
+                this.dataItems = items
+        })
+    },
+    updated(){
+        const ref = this.$refs
+        if(ref.table.$refs.total !== undefined){
+            const totalAll = ref.table.$refs.total
+            let finalTotal = 0
+            totalAll.forEach(el => {
+                finalTotal += parseInt(el.innerHTML)     
+            })
+            this.total = finalTotal
+        }
+    }
 }
 </script>
 

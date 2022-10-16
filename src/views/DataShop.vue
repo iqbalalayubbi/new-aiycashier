@@ -15,6 +15,8 @@
             <button class="btn mt-5 bg-color1 border-color1 hover:bg-color2 hover:border-color2" @click="clickBtn()">Masuk</button>
         </div>
     </div>
+    <div v-show="isLoad" class="w-screen absolute top-0 left-0 h-screen bg-black opacity-50 z-10"></div>
+    <Icon v-show="isLoad" icon="line-md:loading-loop" class="text-9xl text-slate-200 z-[20] absolute top-60 left-0 mx-auto w-full"/>
   </div>
 </template>
 
@@ -23,6 +25,11 @@ import Input from '@/components/Input.vue'
 import axios from 'axios'
 
 export default {
+    data(){
+        return{
+            isLoad:false
+        }
+    },
     components:{Input},
     methods:{
         clickBtn(){
@@ -31,9 +38,12 @@ export default {
             const nama = ref.nama.$refs.input.value
             const alamat = ref.alamat.$refs.input.value
             const token = JSON.parse(localStorage.getItem('token'))
+            this.isLoad = true
             axios.post(`https://aiycashier.herokuapp.com/shop/${token}`,{
                 username,nama,alamat
-            }).then(res => {
+            })
+            .finally(() => this.isLoad = false)
+            .then(res => {
                 const result = res.data
                 console.log(result)
                 if (result.isSuccess){

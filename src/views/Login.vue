@@ -18,6 +18,8 @@
     <div class="bg-color1 w-1/2 h-full lg:flex items-center justify-center hidden">
         <img src="../assets/ilustrasi3.svg" alt="" class="w-3/4">
     </div>
+    <div v-show="isLoad" class="w-screen absolute top-0 left-0 h-screen bg-black opacity-50 z-10"></div>
+    <Icon v-show="isLoad" icon="line-md:loading-loop" class="text-9xl text-slate-200 z-[20] absolute top-60 left-0 mx-auto w-full"/>
   </div>
 </template>
 
@@ -29,7 +31,8 @@ export default {
     data(){
         return{
             password:'',
-            username:''
+            username:'',
+            isLoad :false
         }
     },
     components:{Input},
@@ -37,23 +40,27 @@ export default {
         async clickBtn(menu){
             if (menu == 'masuk'){
                 try {
-                    const result = await this.login
-                    const data = result.data
-                    this.$swal.fire({
-                        position: 'center',
-                        icon: 'success',
-                        title: data.status,
-                        text:data.msg,
-                        showConfirmButton: false,
-                        timer: 2000
-                    }).then(() => {
-                        localStorage.setItem('token',JSON.stringify(data.token))
-                        if (data.isNew){
-                            this.$router.push('/shop/data')
-                        }else{
-                            
-                            this.$router.push('/dashboard')
-                        }
+                    this.isLoad = true
+                    this.login
+                    .finally(() => this.isLoad = false)
+                    .then(result => {
+                        const data = result.data
+                        this.$swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: data.status,
+                            text:data.msg,
+                            showConfirmButton: false,
+                            timer: 2000
+                        }).then(() => {
+                            localStorage.setItem('token',JSON.stringify(data.token))
+                            if (data.isNew){
+                                this.$router.push('/shop/data')
+                            }else{
+                                
+                                this.$router.push('/dashboard')
+                            }
+                        })
                     })
                 } catch (error) {
                     const data = error.response.data

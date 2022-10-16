@@ -1,41 +1,25 @@
 <template>
   <nav class="lg:w-16 bg-color1 h-screen hidden lg:flex flex-col gap-5 hover:lg:w-40 transition-all duration-300" @mouseenter="isOpen = true" @mouseleave="isOpen = false">
-    <ProfileMenu class="mt-12 self-center" :isOpen="isOpen"/>
-    <div v-for="(m,i) in menu" :key="i" class="flex text-white items-center ml-2 gap-3 hover:bg-white py-3 pl-2 hover:text-color1 hover:rounded-l-md hover:cursor-pointer" @click="clickMenu(m.nama)">
+    <ProfileMenu class="mt-12 self-center" :isOpen="isOpen" v-show="finish"/>
+    <div v-for="(m,i) in menu" :key="i" class="flex text-white items-center ml-2 gap-3 hover:bg-white py-3 pl-2 hover:text-color1 hover:rounded-l-md hover:cursor-pointer" @click="clickMenu(m.nama)" v-show="finish">
         <Icon :icon="m.icon" class="text-2xl"/>
         <span v-show="isOpen">{{m.nama}}</span>
     </div>
-    <!-- <div class="flex text-white items-center ml-2 gap-3 hover:bg-white py-3 pl-2 hover:text-color1 hover:rounded-l-md hover:cursor-pointer" @click="this.$router.push('cash')">
-        <Icon icon="fa-solid:cash-register" class="text-2xl"/>
-        <span v-show="isOpen">Kasir</span>
-    </div>
-    <div class="flex text-white items-center ml-2 gap-3 hover:bg-white py-3 pl-2 hover:text-color1 hover:rounded-l-md hover:cursor-pointer" @click="this.$router.push('employe')">
-        <Icon icon="clarity:employee-group-solid" class="text-2xl" />
-        <span v-show="isOpen">Karyawan</span>
-    </div>
-    <div class="flex text-white items-center ml-2 gap-3 hover:bg-white py-3 pl-2 hover:text-color1 hover:rounded-l-md hover:cursor-pointer" @click="this.$router.push('items')">
-        <Icon icon="akar-icons:shipping-box-01" class="text-2xl"/>
-        <span v-show="isOpen">Barang</span>
-    </div>
-    <div class="flex text-white items-center ml-2 gap-3 hover:bg-white py-3 pl-2 hover:text-color1 hover:rounded-l-md hover:cursor-pointer" @click="this.$router.push('chart')">
-        <Icon icon="ant-design:bar-chart-outlined" class="text-2xl"/>
-        <span v-show="isOpen">Statistik</span>
-    </div>
-    <div class="flex text-white items-center ml-2 gap-3 hover:bg-white py-3 pl-2 hover:text-color1 hover:rounded-l-md hover:cursor-pointer" @click="this.$router.push('shop')">
-        <Icon icon="entypo:shop" class="text-2xl"/>
-        <span v-show="isOpen">Shop</span>
-    </div> -->
+    <LoadNav v-show="isLoad" class="absolute lg:w-16 top-10"/>
   </nav>
 </template>
 
 <script>
 import ProfileMenu from '@/components/ProfileMenu.vue'
+import LoadNav from '@/components/LoadNav.vue'
 import axios from 'axios'
 
 export default {
     data(){
         return{
             isOpen:false,
+            isLoad:false,
+            finish:false,
             dataMenu:[
                 {
                     icon : 'ant-design:home-filled',
@@ -76,10 +60,16 @@ export default {
             if (nav == 'shop') this.$router.push('/shop')
         }
     },
-    components:{ProfileMenu},
+    components:{ProfileMenu,LoadNav},
     created(){
         const token = JSON.parse(localStorage.getItem('token'))
+        this.isLoad = true
+
         axios.get(`https://aiycashier.herokuapp.com/${token}`)
+        .finally(() => {
+            this.isLoad = false
+            this.finish = true
+        })
         .then(res => {
             const data = res.data.data
             const role = data.role

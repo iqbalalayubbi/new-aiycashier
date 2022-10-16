@@ -16,6 +16,8 @@
       <button class="btn mt-5 bg-color1 border-color1 hover:bg-color2 hover:border-color2" @click="clickBtn('buat')" ref="button">Buat Akun</button>
       <p class="text-center mt-3">Sudah memiliki akun ? <span class="font-bold hover:cursor-pointer hover:text-color1" @click="this.$router.push('/login')">Masuk</span></p>
    </div>
+   <div v-show="isLoad" class="w-screen absolute top-0 left-0 h-screen bg-black opacity-50 z-10"></div>
+   <Icon v-show="isLoad" icon="line-md:loading-loop" class="text-9xl text-slate-200 z-[20] absolute top-60 left-0 mx-auto w-full"/>
    <img src="../assets/ilustrasi2.svg" alt="" class="absolute right-20 top-40 w-1/3 lg:block hidden">
 </div>
 </template>
@@ -31,23 +33,27 @@ export default {
          password:'',
          confirmPass:'',
          statusName:'',
-         status:''
+         status:'',
+         isLoad:false
       }
    },
    components:{Input},
    methods:{
       async clickBtn(menu){
          if (menu == 'buat'){
-            try {               
-               const result = await this.createAcc
-               this.$swal.fire({
-                  position: 'center',
-                  icon: 'success',
-                  title: 'akun berhasil dibuat',
-                  showConfirmButton: false,
-                  timer: 1500
-               }).then(() => {
-                  this.$router.push('/login')
+            try { 
+               this.isLoad = true              
+               this.createAcc
+               .finally(() => this.isLoad = false)
+               .then(() => {
+                  this.$swal.fire({
+                     position: 'center',
+                     icon: 'success',
+                     title: 'akun berhasil dibuat',
+                     showConfirmButton: false,
+                     timer: 1500
+                  }).then(() => this.$router.push('/login'))
+
                })
             } catch (error) {
                   const data = error.response.data

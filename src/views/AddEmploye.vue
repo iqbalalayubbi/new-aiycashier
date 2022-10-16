@@ -33,8 +33,10 @@
                 <button class="btn mt-5 w-full bg-color1 border-color1 hover:bg-color2 hover:border-color2" @click="clickBtn('simpan')">Simpan</button> 
                 <button class="btn w-full" @click="clickBtn('kembali')">Kembali</button> 
             </div>
-
         </div>
+
+    <div v-show="isLoad" class="w-screen absolute top-0 left-0 h-screen bg-black opacity-50 z-10"></div>
+    <Icon v-show="isLoad" icon="line-md:loading-loop" class="text-9xl text-slate-200 z-[20] absolute top-60 left-0 mx-auto w-full"/>
     </div>
 </template>
 
@@ -44,6 +46,11 @@ import Input from '@/components/Input.vue'
 import axios from 'axios'
 
 export default {
+    data(){
+        return{
+            isLoad : false
+        }
+    },
     components:{Navbar,Input},
     methods:{
         clickBtn(menu){
@@ -52,11 +59,14 @@ export default {
                 const username = ref.username.$refs.input.value
                 const password = ref.password.$refs.input.value
                 const role = this.$refs.role.value
-    
+
+                this.isLoad = true
                 const token = JSON.parse(localStorage.getItem('token'))
                 axios.post(`https://aiycashier.herokuapp.com/employe/${token}`,{
                     username,password,role
-                }).then(res => {
+                })
+                .finally(() => this.isLoad = false)
+                .then(res => {
                     const result = res.data
                     if (result.isSuccess){
                         this.$swal.fire({

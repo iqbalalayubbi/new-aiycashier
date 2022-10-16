@@ -35,8 +35,10 @@
                 </div>
             </div>
             <button class="btn mt-5 w-1/3 bg-color1 border-color1 hover:bg-color2 hover:border-color2" @click="clickBtn('simpan')">Simpan</button> 
-            <button class="btn w-1/3 mt-5" @click="clickBtn('kembali')">Kembali</button> 
+            <button class="btn w-1/3 mt-5" @click="this.$router.push('/items')">Kembali</button> 
         </div>
+        <div v-show="isLoad" class="w-screen absolute top-0 left-0 h-screen bg-black opacity-50 z-10"></div>
+        <Icon v-show="isLoad" icon="line-md:loading-loop" class="text-9xl text-slate-200 z-[20] absolute top-60 left-0 mx-auto w-full"/>
     </div>
 </template>
 
@@ -46,6 +48,11 @@ import Input from '@/components/Input.vue'
 import axios from 'axios'
 
 export default {
+    data(){
+        return{
+            isLoad:false
+        }
+    },
     components:{Navbar,Input},
     methods:{
         clickBtn(btn){
@@ -58,10 +65,14 @@ export default {
                 const modal = ref.modal.$refs.input.value
                 const harga = ref.harga.$refs.input.value
                 const stok = ref.stok.$refs.input.value
-
+                
+                // play loading
+                this.isLoad = true
                 axios.post(`https://aiycashier.herokuapp.com/items/${token}`,{
                     nama,kategori,satuan,modal,harga,stok
-                }).then(res => {
+                })
+                .finally(() => this.isLoad = false)
+                .then(res => {
                     const data = res.data
                     this.$swal.fire({
                         position: 'center',

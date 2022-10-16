@@ -61,6 +61,11 @@ const routes = [
     name: 'Chart-View',
     component: () => import('../views/Chart.vue')
   },
+  {
+    path: '/items/:id',
+    name: 'DetailItem-View',
+    component: () => import('../views/DetailItem.vue')
+  },
   
 ]
 

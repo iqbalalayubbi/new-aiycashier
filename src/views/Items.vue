@@ -16,8 +16,8 @@
                 </ul>
             </div>
 
-            <TableItems class="w-[90%] lg:w-3/4 mt-10" :items="items"/>
-
+            <TableItems class="w-[90%] lg:w-3/4 mt-10 h-96" :items="items"/>
+            <TableLoad v-show="isLoad" class="absolute w-[90%] lg:w-3/4 z-[99] top-32"/>
             <button class="btn mt-10 w-1/2 bg-color1 border-color1 hover:bg-color2 hover:border-color2" @click="this.$router.push('items/add')">Tambah Barang</button> 
 
         </div>
@@ -28,6 +28,7 @@
 import Navbar from '@/components/Navbar.vue'
 import TableItems from '@/components/TableItems.vue'
 import NavMobile from '@/components/NavMobile.vue'
+import TableLoad from '@/components/TableLoad.vue'
 import axios from 'axios'
 
 export default {
@@ -36,9 +37,10 @@ export default {
             isInput:false,
             items:[],
             data:[],
+            isLoad:true
         }
     },
-    components:{Navbar,TableItems,NavMobile},
+    components:{Navbar,TableItems,NavMobile,TableLoad},
     methods:{
         onInput(e){
             const val = e.target.value
@@ -53,7 +55,9 @@ export default {
     },
     created(){
         const token = JSON.parse(localStorage.getItem('token'))
-        axios.get(`https://aiycashier.herokuapp.com/${token}`).then(res => {
+        axios.get(`https://aiycashier.herokuapp.com/${token}`)
+        .finally(() => this.isLoad = false)
+        .then(res => {
             const data = res.data.data
             const role = data.role
             if (role == 'kasir') {

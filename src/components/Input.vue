@@ -1,7 +1,7 @@
 <template>
     <div class="flex flex-col relative">
         <label for="">{{nama}}</label>
-        <input :type="type" class="border-2 border-color1 rounded-md h-10 indent-3" :placeholder="placeholder" @input="onInput" ref="input">
+        <input :type="type" class="border-2 border-color1 rounded-md h-10 indent-3" :placeholder="placeholder" @input="onInput" ref="input" :value="val">
         <label for="" class="absolute right-0" :class="status">{{statusName}}</label>
     </div>
 </template>
