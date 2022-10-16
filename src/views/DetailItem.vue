@@ -66,7 +66,7 @@ export default {
             const id = this.$route.params.id
             const token = JSON.parse(localStorage.getItem('token')) 
             this.loadUpdate = true
-            axios.put(`https://aiycashier.herokuapp.com/${id}/${token}`,this.item)
+            axios.put(`https://aiycashier.herokuapp.com/items/${id}/${token}`,this.item)
                 .finally(() => {
                     this.$swal.fire({
                         position: 'center',
@@ -94,7 +94,7 @@ export default {
     created(){
         const id = this.$route.params.id
         const token = JSON.parse(localStorage.getItem('token')) 
-        axios.get(`https://aiycashier.herokuapp.com/${id}/${token}`)
+        axios.get(`https://aiycashier.herokuapp.com/items/${id}/${token}`)
             .finally(() => {
                 this.isLoad = false
                 this.finish = true

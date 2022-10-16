@@ -66,6 +66,16 @@ const routes = [
     name: 'DetailItem-View',
     component: () => import('../views/DetailItem.vue')
   },
+  {
+    path: '/employe/:id',
+    name: 'DetailEmploye-View',
+    component: () => import('../views/DetailEmploye.vue')
+  },
+  {
+    path: '/profile',
+    name: 'Profile-View',
+    component: () => import('../views/Profile.vue')
+  },
   
 ]
 

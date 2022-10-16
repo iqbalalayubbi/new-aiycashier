@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="overflow-x-auto absolute z-10 w-3/4 flex justify-center left-40 top-20">
+        <div class="overflow-x-auto absolute z-10 w-[95%] lg:w-3/4 flex justify-center left-3 lg:left-40 top-32 lg:top-20">
             <table class="table w-full">
                 <!-- head -->
                 <thead>

@@ -4,7 +4,6 @@
     <!-- head -->
     <thead class="sticky top-0">
       <tr>
-        <th>No</th>
         <th>Tanggal</th>
         <th>Nama</th>
         <th>Kategori</th>
@@ -16,16 +15,19 @@
     </thead>
     <tbody>
       <!-- row 1 -->
-      <tr v-for="n in 10" :key="n">
-        <td>{{n}}</td>
-        <td>12/02/22 18:00</td>
-        <td>Chocolatos</td>
-        <td>Makanan</td>
-        <td>pcs</td>
-        <td>500</td>
-        <td>2</td>
-        <td>1000</td>
-      </tr>
+      <!-- <template v-for="n in totalTrans"> -->
+        <template v-for="(trans,i) in transaksi" :key="i">
+          <tr v-for="(item,x) in trans.items" :key="x">
+            <td>{{trans.tanggal}}</td>
+            <td>{{item.nama}}</td>
+            <td>{{item.kategori}}</td>
+            <td>{{item.satuan}}</td>
+            <td>{{item.harga}}</td>
+            <td>{{item.jumlah}}</td>
+            <td>{{item.total}}</td>
+          </tr>
+        </template>
+      <!-- </template> -->
     </tbody>
   </table>
 </div>
@@ -33,10 +35,25 @@
 
 <script>
 export default {
-
+  props:{
+    transaksi:Object,
+    totalTrans:Number
+  }
 }
 </script>
 
 <style>
 
 </style>
+
+<!-- 
+  [
+    {
+      tanggal : {tanggal},
+      items:[
+        {item1},
+        {item2}
+      ]
+    } 
+  ]
+ -->

@@ -31,7 +31,7 @@
         </td>
         <td>{{employe.no_hp}}</td>
         <th>
-          <button class="btn btn-ghost btn-xs">details</button>
+          <button class="btn btn-ghost btn-xs" @click="clickDetail(employe.username)">lihat</button>
         </th>
       </tr>
     </tbody>    
@@ -48,9 +48,14 @@ export default {
       employes:[]
     }
   },
+  methods:{
+    clickDetail(username){
+      this.$router.push(`/employe/${username}`)
+    }
+  },
   created(){
     const token = JSON.parse(localStorage.getItem('token'))
-    axios.get(`http://localhost:3000/employe/${token}`).then(res => {
+    axios.get(`https://aiycashier.herokuapp.com/employe/${token}`).then(res => {
         const data = res.data
         this.employes = data.data
     })

@@ -12,7 +12,7 @@
                 <Input type="date"  class="w-40"/>
             </div>
             <div class="flex justify-center mt-10"> 
-                <TableTrans class="w-[90%]"/>
+                <TableTrans class="w-[90%]" :transaksi="trans"/>
             </div>
         </div>
     </div>
@@ -25,11 +25,15 @@ import Input from '@/components/Input.vue'
 import TableTrans from '@/components/TableTrans.vue'
 import SliderCard from '@/components/SliderCard.vue'
 import NavMobile from '@/components/NavMobile.vue'
+import axios from 'axios'
 
 export default {
     components:{Navbar,CardDash,Input,TableTrans,SliderCard,NavMobile},
     data(){
         return{
+            trans:[],
+            dataTrans:[],
+            countItem:0,
             cards:[
                 {
                     icon:'ant-design:line-chart-outlined',
@@ -48,6 +52,17 @@ export default {
                 }
             ]
         }
+    },
+    created(){
+        const token = JSON.parse(localStorage.getItem("token"));
+        axios.get(`https://aiycashier.herokuapp.com/transaksi/${token}`).then(res => {
+            const result = res.data.data
+            this.trans = result
+            this.dataTrans = result
+            let count = 0
+            result.forEach(trans => trans.items.forEach((item) => count ++))
+            this.countItem = count
+        })
     }
 }
 </script>

@@ -81,6 +81,9 @@ export default {
                 })
 
             }
+            else if(menu == 'kembali'){
+                this.$router.push('/employe')
+            }
         }
     }
 }   

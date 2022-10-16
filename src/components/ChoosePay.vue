@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="flex flex-col items-center">
-      <ul class="menu bg-base-100 w-1/2 p-2 rounded-md">
+      <ul class="menu bg-base-100 w-[90%] lg:w-1/2 p-2 rounded-md">
         <h1 class="font-bold text-center text-xl">Pilih Pembayaran</h1>
         <li @click="methodPay('bri')">
           <a>
@@ -39,6 +39,9 @@
             CASH
           </a>
         </li>
+        <li @click="cancelPay">
+          <button class="flex justify-center bg-red-600 text-white font-bold">Batal</button>
+        </li>
       </ul>
     </div>
   </div>
@@ -49,6 +52,9 @@ export default {
     methods:{
         methodPay(type){
             this.$emit('choosePay',type)
+        },
+        cancelPay(){
+          this.$emit('cancelPay')
         }
     }
 };

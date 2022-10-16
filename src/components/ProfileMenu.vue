@@ -6,7 +6,7 @@
         </div>
       </label>
       <ul tabindex="0" class="left-10 menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-300 rounded-box w-52" v-show="isOpen">
-        <li>
+        <li @click="clickProfile">
           <a class="justify-between">
             Profile
           </a>
@@ -20,6 +20,11 @@
 export default {
     props:{
         isOpen:Boolean
+    },
+    methods:{
+      clickProfile(){
+        this.$router.push('/profile')
+      }
     }
 }
 </script>
