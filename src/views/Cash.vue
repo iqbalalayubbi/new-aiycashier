@@ -216,7 +216,7 @@ export default {
       this.isPay = false;
       // make new transaksi
       axios
-        .post(`http://localhost:3000/transaksi/${token}`, this.itemTrans)
+        .post(`https://aiycashier.herokuapp.com/transaksi/${token}`, this.itemTrans)
         .then((res) => {
             this.$swal
               .fire({
