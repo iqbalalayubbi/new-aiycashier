@@ -174,6 +174,7 @@ export default {
       const items = this.$refs.table.$refs.item
       this.isLoad = true
       items.forEach(item => {
+        const modal = item.getAttribute('data-modal')
         const child = item.children
         const nama = child[1].innerHTML
         const kategori = child[2].innerHTML
@@ -182,7 +183,7 @@ export default {
         const jumlah = child[5].children[0].value
         const total = child[6].innerHTML
         const itemTable = {
-          nama,kategori,satuan,harga,jumlah,total
+          nama,kategori,satuan,modal,harga,jumlah,total
         }
         this.itemTrans.push(itemTable)
       })
@@ -225,8 +226,11 @@ export default {
     Pay,
   },
   created() {
+    this.isLoad = true
     const token = JSON.parse(localStorage.getItem("token"));
-    axios.get(`https://aiycashier.herokuapp.com/items/${token}`).then((res) => {
+    axios.get(`https://aiycashier.herokuapp.com/items/${token}`)
+    .finally(() => this.isLoad = false)
+    .then((res) => {
       const items = res.data.data;
       this.items = items;
       this.dataItems = items;

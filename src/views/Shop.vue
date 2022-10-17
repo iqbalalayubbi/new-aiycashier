@@ -26,6 +26,9 @@
           Kembali
         </button>
       </div>
+      
+      <div v-show="isLoad" class="w-screen absolute top-0 left-0 h-screen bg-black opacity-50 z-10"></div>
+      <Icon v-show="isLoad" icon="line-md:loading-loop" class="text-9xl text-slate-200 z-[20] absolute top-60 left-0 mx-auto w-full"/>
     </div>
   </div>
 </template>
@@ -40,9 +43,10 @@ export default {
   data() {
     return {
       shop: {},
+      isLoad:false
     };
   },
-  components: { Navbar, Input, NavMobile },
+  components: { Navbar, Input, NavMobile ,},
   methods: {
     updateShop() {
       const token = JSON.parse(localStorage.getItem("token"));
@@ -65,7 +69,10 @@ export default {
   },
   created() {
     const token = JSON.parse(localStorage.getItem("token"));
-    axios.get(`https://aiycashier.herokuapp.com/${token}`).then((res) => {
+    this.isLoad = true
+    axios.get(`https://aiycashier.herokuapp.com/${token}`)
+    .finally(() => this.isLoad = false)
+    .then((res) => {
       const data = res.data.data;
       const role = data.role;
       if (role == "kasir" || role == "pengelola") {

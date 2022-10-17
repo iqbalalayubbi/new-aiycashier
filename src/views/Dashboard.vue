@@ -15,6 +15,8 @@
                 <TableTrans class="w-[90%]" :transaksi="trans"/>
             </div>
         </div>
+        <div v-show="isLoad" class="w-screen absolute top-0 left-0 h-screen bg-black opacity-50 z-10"></div>
+        <Icon v-show="isLoad" icon="line-md:loading-loop" class="text-9xl text-slate-200 z-[20] absolute top-60 left-0 mx-auto w-full"/>
     </div>
 </template>
 
@@ -31,37 +33,56 @@ export default {
     components:{Navbar,CardDash,Input,TableTrans,SliderCard,NavMobile},
     data(){
         return{
+            isLoad:false,
             trans:[],
             dataTrans:[],
-            countItem:0,
             cards:[
                 {
                     icon:'ant-design:line-chart-outlined',
                     nama:'Untung',
-                    val:'Rp20.000'
+                    val:0
                 },
                 {
                     icon:'carbon:report',
                     nama:'Terjual',
-                    val:'Rp20.000'
+                    val:0
                 },
                 {
                     icon:'akar-icons:shipping-box-01',
                     nama:'Barang',
-                    val:'Rp20.000'
+                    val:0
                 }
             ]
         }
     },
     created(){
+        this.isLoad = true
         const token = JSON.parse(localStorage.getItem("token"));
-        axios.get(`https://aiycashier.herokuapp.com/transaksi/${token}`).then(res => {
-            const result = res.data.data
-            this.trans = result
-            this.dataTrans = result
-            let count = 0
-            result.forEach(trans => trans.items.forEach((item) => count ++))
-            this.countItem = count
+
+        // get all laba
+        axios.get(`http://localhost:3000/chart/${token}`)
+        .then(res => {
+            const untung = res.data.untung
+            this.cards[0].val = untung
+        })
+
+        // get total item
+        axios.get(`http://localhost:3000/items/total/${token}`)
+        .then(res => {
+            const total = res.data.total
+            this.cards[2].val = total
+        })
+
+        // get all transaksi
+        axios.get(`https://aiycashier.herokuapp.com/transaksi/${token}`)
+            .finally(() => this.isLoad = false)
+            .then(res => {
+                const result = res.data.data
+                this.trans = result
+                this.dataTrans = result
+                let count = 0
+                result.forEach(trans => trans.items.forEach((item) => count ++))
+                this.cards[1].val = count
         })
     }
 }

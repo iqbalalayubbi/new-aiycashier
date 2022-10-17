@@ -13,6 +13,8 @@
             </div>
             <TableEmploye class="w-[90%] lg:w-3/4 mt-5"/>
             <button class="btn mt-10 w-1/2 bg-color1 border-color1 hover:bg-color2 hover:border-color2" @click="this.$router.push('/employe/add')">Tambah Karyawan</button>
+            <div v-show="isLoad" class="w-screen absolute top-0 left-0 h-screen bg-black opacity-50 z-[20]"></div>
+            <Icon v-show="isLoad" icon="line-md:loading-loop" class="text-9xl text-slate-200 z-[20] absolute top-60 left-0 mx-auto w-full"/>
         </div>
     </div>
 </template>
@@ -26,10 +28,18 @@ import NavMobile from '@/components/NavMobile.vue'
 import axios from 'axios'
 
 export default {
+    data(){
+        return{
+            isLoad:false
+        }
+    },
     components:{Navbar,Input,ProfileMenu,TableEmploye,NavMobile},
     created(){
+        this.isLoad = true
         const token = JSON.parse(localStorage.getItem('token'))
-        axios.get(`https://aiycashier.herokuapp.com/${token}`).then(res => {
+        axios.get(`https://aiycashier.herokuapp.com/${token}`)
+        .finally(() => this.isLoad = false)
+        .then(res => {
             const data = res.data.data
             const role = data.role
             if (role == 'kasir' || role == 'pengelola') {

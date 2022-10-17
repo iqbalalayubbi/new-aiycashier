@@ -15,7 +15,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(item, i) in items" :key="i" :data-id="item.id" ref="item">
+        <tr v-for="(item, i) in items" :key="i" :data-id="item.id" ref="item" :data-modal="item.modal">
           <td>{{ i + 1 }}</td>
           <td>{{ item.nama }}</td>
           <td>{{ item.kategori }}</td>
