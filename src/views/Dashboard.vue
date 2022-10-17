@@ -60,14 +60,14 @@ export default {
         const token = JSON.parse(localStorage.getItem("token"));
 
         // get all laba
-        axios.get(`http://localhost:3000/chart/${token}`)
+        axios.get(`https://aiycashier.herokuapp.com/chart/${token}`)
         .then(res => {
             const untung = res.data.untung
             this.cards[0].val = untung
         })
 
         // get total item
-        axios.get(`http://localhost:3000/items/total/${token}`)
+        axios.get(`https://aiycashier.herokuapp.com/items/total/${token}`)
         .then(res => {
             const total = res.data.total
             this.cards[2].val = total
