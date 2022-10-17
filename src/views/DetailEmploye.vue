@@ -22,7 +22,7 @@
     </div>
     <div class="lg:w-full w-screen flex flex-col items-center">
       <!-- content -->
-      <h1 class="text-4xl font-bold mt-10">Profile Karyawan</h1>
+      <h1 class="text-xl lg:text-4xl font-bold mt-10">Profile Karyawan</h1>
       <div class="avatar mt-10">
         <div
           class="w-24 rounded-full ring ring-base-300 ring-offset-base-100 ring-offset-2"
@@ -30,8 +30,8 @@
           <img src="https://placeimg.com/192/192/people" />
         </div>
       </div>
-      <div class="flex w-3/4 justify-center gap-5 mt-5">
-        <div class="w-1/3 flex flex-col gap-3 mt-10">
+      <div class="flex w-[90%] lg:w-3/4 justify-center gap-5 mt-5">
+        <div class="w-1/2 lg:w-1/3 flex flex-col gap-3 mt-10">
           <Input
             nama="nama"
             ref="nama"
@@ -45,7 +45,7 @@
             :val="employe[0].username"
           />
         </div>
-        <div class="w-1/3 flex flex-col gap-3 mt-10">
+        <div class="w-1/2 lg:w-1/3 flex flex-col gap-3 mt-10">
           <Input
             nama="no hp"
             ref="noHp"
@@ -61,18 +61,12 @@
         </div>
       </div>
       <button
-        class="btn mt-10 w-1/3 bg-color1 border-color1 hover:bg-color2 hover:border-color2"
+        class="btn mt-10 w-3/4 lg:w-1/3 bg-color1 border-color1 hover:bg-color2 hover:border-color2"
         @click="clickBtn('simpan')"
       >
         Simpan
       </button>
-      <button
-        class="btn mt-5 w-1/3 bg-red-500 border-red-500 hover:bg-red-600 hover:border-red-600"
-        @click="clickBtn('berhenti')"
-      >
-        Berhentikan
-      </button>
-      <button class="btn w-1/3 mt-5" @click="clickBtn('kembali')">
+      <button class="btn w-3/4 lg:w-1/3 mt-5" @click="clickBtn('kembali')">
         Kembali
       </button>
     </div>
@@ -135,26 +129,6 @@ export default {
           });
       } else if (menu == "kembali") {
         this.$router.push("/employe");
-      } else if (menu == "berhenti") {
-            this.$swal.fire({
-					title: "Ingin berhentikan karyawan?",
-					text: "kamu akan menghapus karyawan ini",
-					icon: "warning",
-					showCancelButton: true,
-					confirmButtonColor: "#3085d6",
-					cancelButtonColor: "#d33",
-					confirmButtonText: "Berhentikan",
-					}).then((result) => {
-					if (result.isConfirmed) {
-						this.$swal.fire("Diberhentikan", "Karyawan berhasil diberhentikan", "success").then(() => {
-							const token = JSON.parse(localStorage.getItem('token'))
-							const id = this.$route.params.id
-							axios.delete(`http://localhost:3000/employe/${id}/${token}`).then(() => {
-								this.$router.push('/employe')
-							})
-						})
-					}
-            });
       }
     },
   },
@@ -172,10 +146,12 @@ export default {
   created() {
     const token = JSON.parse(localStorage.getItem("token"));
     const id = this.$route.params.id;
-    axios.get(`http://localhost:3000/employe/${id}/${token}`).then((res) => {
-      const result = res.data;
-      this.employe = result.data;
-    });
+    axios
+      .get(`https://aiycashier.herokuapp.com/employe/${id}/${token}`)
+      .then((res) => {
+        const result = res.data;
+        this.employe = result.data;
+      });
   },
 };
 </script>

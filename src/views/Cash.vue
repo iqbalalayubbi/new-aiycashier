@@ -16,7 +16,7 @@
             <input
               type="text"
               placeholder="Cari Barang…"
-              class="input input-bordered w-full"
+              class="input input-bordered w-full" ref="input" @input="onInput"
             />
             <button
               class="btn btn-square bg-color1 border-color1 hover:bg-color2 hover:border-color2"
@@ -46,7 +46,7 @@
       <!-- choose payment -->
       <ChoosePay
         v-show="isChoosePay"
-        class="absolute top-10 lg:top-20 w-full"
+        class="absolute top-10 lg:top-10 w-full"
         @choosePay="choosePay"
         :class="[isPopup ? 'z-10' : 'z-0']"
         @cancelPay="cancelPay"
@@ -63,6 +63,8 @@
         @cancelPay="cancelPay"
       />
     </div>
+
+    <!-- popup blank screen -->
     <div
       v-show="isPopup"
       class="w-screen absolute top-0 left-0 h-screen bg-black opacity-50"
@@ -116,13 +118,33 @@ export default {
       typePay: "",
       namePay: "",
       itemTrans:[],
-      isLoad:false
+      isLoad:false,
+      inputVal :''
     };
   },
   methods: {
+    onTyping(e){
+      const key = e.key 
+      // open and close menu choose item
+      if (key == 'Enter'){
+        this.chooseItem = true
+      }else if (key == 'Escape'){
+        this.chooseItem = false
+      }
+    },
+    onInput(e){
+      const val = e.target.value.toLowerCase()
+      this.inputVal = val
+      const itemFound = []
+      this.dataItems.forEach(item => {
+        if(item.nama.toLowerCase().startsWith(val)){
+          itemFound.push(item)
+        }
+      })
+      this.items = itemFound
+    },
     clickItem(item) {
       if (this.itemsId.includes(item.id)) {
-        // sudah ada
         const items = this.$refs.table.$refs.item;
         const id = item.id;
         items.forEach((el) => {
@@ -137,10 +159,11 @@ export default {
           }
         });
       } else {
-        // belum ada
         this.dataTableItems.push(item);
         this.itemsId.push(item.id);
       }
+      this.$refs.input.value = ''
+      this.$refs.input.focus()
       this.chooseItem = false;
     },
     calItem(total) {
@@ -191,8 +214,9 @@ export default {
       this.isPopup = false;
       this.isChoosePay = false;
       this.isPay = false;
+      // make new transaksi
       axios
-        .post(`https://aiycashier.herokuapp.com/transaksi/${token}`, this.itemTrans)
+        .post(`http://localhost:3000/transaksi/${token}`, this.itemTrans)
         .then((res) => {
             this.$swal
               .fire({
@@ -225,9 +249,14 @@ export default {
     ChoosePay,
     Pay,
   },
+  mounted(){
+    const input = this.$refs.input
+    input.focus()
+  },
   created() {
     this.isLoad = true
     const token = JSON.parse(localStorage.getItem("token"));
+    // get all items
     axios.get(`https://aiycashier.herokuapp.com/items/${token}`)
     .finally(() => this.isLoad = false)
     .then((res) => {
@@ -235,6 +264,7 @@ export default {
       this.items = items;
       this.dataItems = items;
     });
+    window.addEventListener('keydown',this.onTyping)
   },
   updated() {
     const ref = this.$refs;

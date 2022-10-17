@@ -2,7 +2,7 @@
   <div class="overflow-x-auto w-full overflow-y-auto">
     <table class="table w-full">
       <!-- head -->
-      <thead class="sticky top-0 z-[80]">
+      <thead class="sticky top-0 z-0">
         <tr>
           <th>nama</th>
           <th>kategori</th>
@@ -93,5 +93,3 @@ export default {
   },
 };
 </script>
-
-<style></style>

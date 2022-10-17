@@ -17,6 +17,7 @@
             </div>
 
             <TableItems class="w-[90%] lg:w-3/4 mt-10 h-96" :items="items"/>
+            <span v-show="notFound" class="text-xl -mt-80">transaksi tidak ditemukan </span>
             <TableLoad v-show="isLoad" class="absolute w-[90%] lg:w-3/4 z-[99] top-32"/>
             <button class="btn mt-10 w-1/2 bg-color1 border-color1 hover:bg-color2 hover:border-color2" @click="this.$router.push('items/add')">Tambah Barang</button> 
 
@@ -37,20 +38,22 @@ export default {
             isInput:false,
             items:[],
             data:[],
-            isLoad:true
+            isLoad:true,
+            notFound:false
         }
     },
     components:{Navbar,TableItems,NavMobile,TableLoad},
     methods:{
         onInput(e){
-            const val = e.target.value
+            const val = e.target.value.toLowerCase()
             const found = []
             this.data.forEach(item => {
-                if (item.nama.startsWith(val)){
+                if (item.nama.toLowerCase().startsWith(val)){
                     found.push(item)
                 }
             })
             this.items = found
+            found.length == 0 ? this.notFound = true : this.notFound = false
         }
     },
     created(){

@@ -14,34 +14,34 @@
                 <li><a>Statistik</a></li>
             </ul>
         </div>
-        <div class="lg:w-full w-screen flex flex-col items-center" v-show="finish">
+        <div class="lg:w-full w-screen flex flex-col items-center">
             <!-- content -->
-            <h1 class="text-4xl font-bold mt-10">Ubah Barang</h1>
+            <h1 class="text-2xl lg:text-4xl font-bold mt-10">Ubah Barang</h1>
             <div class="avatar mt-5">
                 <div class="w-24 rounded-full ring ring-base-300 ring-offset-base-100 ring-offset-2">
                     <img src="https://placeimg.com/192/192/people" />
                 </div>
             </div>
-            <div ref="item" v-for="(item,i) in items" :key="i" class="flex w-3/4 justify-center gap-5">
-                <div class="w-1/3 flex flex-col gap-3 mt-10">
+            <div ref="item" v-for="(item,i) in items" :key="i" class="flex w-[90%] lg:w-3/4 justify-center gap-5">
+                <div class="w-1/2 lg:w-1/3 flex flex-col gap-3 mt-10">
                     <Input nama="nama Barang" ref="nama" :val="item.nama" @onInput="onInput($event,'nama')"/>
                     <Input nama="kategori" ref="kategori" :val="item.kategori" @onInput="onInput($event,'kategori')"/>
                     <Input nama="satuan" ref="satuan" :val="item.satuan" @onInput="onInput($event,'satuan')"/>
                 </div>
-                <div class="w-1/3 flex flex-col gap-3 mt-10">
+                <div class="w-1/2 lg:w-1/3 flex flex-col gap-3 mt-10">
                     <Input nama="modal" ref="modal" :val="item.modal" @onInput="onInput($event,'modal')"/>
                     <Input nama="harga" ref="harga" :val="item.harga" @onInput="onInput($event,'harga')"/>
                     <Input nama="stok" ref="stok" :val="item.stok" @onInput="onInput($event,'stok')"/>
                 </div>
             </div>
-            <button class="btn mt-5 w-1/3 bg-color1 border-color1 hover:bg-color2 hover:border-color2" @click="saveItem">Simpan</button> 
-            <button class="btn w-1/3 mt-5" @click="this.$router.push('/items')">Kembali</button> 
+            <button class="btn mt-5 w-[90%] lg:w-1/3 bg-color1 border-color1 hover:bg-color2 hover:border-color2" @click="saveItem">Simpan</button> 
+            <button class="btn w-[90%] lg:w-1/3 mt-5" @click="this.$router.push('/items')">Kembali</button> 
         </div>
 
         <!-- loading -->
-        <div v-show="loadUpdate" class="w-screen absolute top-0 left-0 h-screen bg-black opacity-50 z-10"></div>
-        <Icon v-show="loadUpdate" icon="line-md:loading-loop" class="text-9xl text-slate-200 z-[20] absolute top-60 left-0 mx-auto w-full"/>
-        <LoadDetailItem v-show="isLoad" class="absolute top-20 left-10"/>
+        <div v-show="isLoad" class="w-screen absolute top-0 left-0 h-screen bg-black opacity-50 z-10"></div>
+        <Icon v-show="isLoad" icon="line-md:loading-loop" class="text-9xl text-slate-200 z-[20] absolute top-60 left-0 mx-auto w-full"/>
+        <!-- <LoadDetailItem v-show="isLoad" class="absolute top-20 left-10"/> -->
     </div>
 </template>
 
@@ -55,17 +55,15 @@ export default {
     data(){
         return{
             items:[],
-            isLoad :true,
-            finish : false,
+            isLoad :false,
             item:{},
-            loadUpdate:false
         }
     },
     methods:{
         saveItem(){
             const id = this.$route.params.id
             const token = JSON.parse(localStorage.getItem('token')) 
-            this.loadUpdate = true
+            this.isLoad = true
             axios.put(`https://aiycashier.herokuapp.com/items/${id}/${token}`,this.item)
                 .finally(() => {
                     this.$swal.fire({
@@ -75,7 +73,7 @@ export default {
                         showConfirmButton: false,
                         timer: 500
                     }).then(() => {
-                        this.loadUpdate = false
+                        this.isLoad = false
                         this.$router.push('/items')
                     })
                     
@@ -92,13 +90,12 @@ export default {
     },
     components:{Navbar,Input,LoadDetailItem},
     created(){
+        this.isLoad = true
         const id = this.$route.params.id
         const token = JSON.parse(localStorage.getItem('token')) 
         axios.get(`https://aiycashier.herokuapp.com/items/${id}/${token}`)
             .finally(() => {
                 this.isLoad = false
-                this.finish = true
-            
             })
             .then(res => {
                 const result = res.data

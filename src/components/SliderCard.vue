@@ -6,7 +6,7 @@
                 <Icon icon="ant-design:line-chart-outlined" class="text-6xl"/>
                 <div>
                     <h2 class="card-title">Untung</h2>
-                    <p>Rp20.000</p>
+                    <p>Rp{{untung}}</p>
                 </div>
             </div>
         </div>
@@ -21,7 +21,7 @@
                 <Icon icon="carbon:report" class="text-6xl"/>
                 <div>
                     <h2 class="card-title">Terjual</h2>
-                    <p>200</p>
+                    <p>{{terjual}}</p>
                 </div>
             </div>
         </div>
@@ -36,7 +36,7 @@
                 <Icon icon="akar-icons:shipping-box-01" class="text-6xl"/>
                 <div>
                     <h2 class="card-title">Barang</h2>
-                    <p>Rp20.000</p>
+                    <p>{{items}}</p>
                 </div>
             </div>
         </div>
@@ -50,6 +50,11 @@
 
 <script>
 export default {
+    props:{
+        untung:Number,
+        terjual:Number,
+        items:Number,
+    }
 }
 </script>
 
