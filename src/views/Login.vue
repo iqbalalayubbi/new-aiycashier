@@ -22,11 +22,15 @@
           nama="username"
           type="text"
           @onInput="onInput($event, 'username')"
+          ref="username"
+          @onFocus="onFocus('username')"
         />
         <Input
           nama="password"
           type="password"
           @onInput="onInput($event, 'password')"
+          ref="password"
+          @onFocus="onFocus('password')"
         />
         <button
           class="btn mt-5 bg-color1 border-color1 hover:bg-color2 hover:border-color2"
@@ -70,55 +74,81 @@ export default {
         return{
             password:'',
             username:'',
-            isLoad :false
+            isLoad :false,
+            inFocus:'username'
         }
     },
     components:{Input},
     methods:{
-        async clickBtn(menu){
-            if (menu == 'masuk'){
-                this.isLoad = true
-                try {
-                    const result = await axios.post('https://aiycashier.herokuapp.com/login',{
-                        username:this.username,
-                        password:this.password
-                    })
-                    const data = result.data
-                    localStorage.setItem('token',JSON.stringify(data.token))
-                    this.$swal.fire({
-                        position: 'center',
-                        icon: 'success',
-                        title: data.status,
-                        text:data.msg,
-                        showConfirmButton: false,
-                        timer: 1500
-                    }).then(res => {
-                        if (data.isNew){
-                            this.$router.push('/shop/data')
-                        }else{
-                            this.$router.push('/dashboard')
-                        }
-                    })
-                } catch (error) {
-                    if (error){
-                        const data = error.response.data
-                        this.$swal.fire({
-                            position: 'center',
-                            icon: 'error',
-                            title: data.status,
-                            text:data.msg,
-                            showConfirmButton: false,
-                            timer: 1500
-                        })
-                    }
-                }
-                this.isLoad = false
-                }
+        onFocus(el){
+          this.inFocus = el
+        },
+        clickBtn(menu){
+            if (menu == 'masuk')this.login()
         },
         onInput(val,name){
             if(name == 'username') this.username = val
             else this.password = val
+        },
+        onKeyboard(e) {
+          const key = e.key;
+          if (key == "Enter") {
+            const ref = this.$refs;
+            if (this.inFocus == 'username') {
+                this.inFocus = 'password'
+                ref.password.$refs.input.focus()
+            }
+            else if (this.inFocus == 'password') {
+                this.inFocus = 'username'
+                this.login()
+            }
+          }
+        },
+        login(){
+          this.isLoad = true
+          const ref = this.$refs
+          const username = ref.username.$refs.input.value
+          const password = ref.password.$refs.input.value
+          axios.post('https://aiycashier.herokuapp.com/login',{username,password})
+          .finally(() => this.isLoad = false)
+          .then(result => {
+            const data = result.data
+            localStorage.setItem('token',JSON.stringify(data.token))
+            this.$swal.fire({
+                position: 'center',
+                icon: 'success',
+                title: data.status,
+                text:data.msg,
+                showConfirmButton: false,
+                timer: 1500
+            }).then(() => {
+                if (data.isNew){
+                    this.$router.push('/shop/data')
+                }else{
+                    this.$router.push('/dashboard')
+                }
+            })
+          }).catch(err => {
+            if (err){
+                const data = err.response.data
+                this.$swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: data.status,
+                    text:data.msg,
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+            }
+          })
         }
+    },
+    mounted() {
+      const ref = this.$refs;
+      ref.username.$refs.input.focus();
+    },
+    created(){
+      document.addEventListener("keydown", this.onKeyboard);
     }
 }
 </script>

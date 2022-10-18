@@ -6,7 +6,7 @@
             <!-- content -->
             <div class="form-control mt-20 lg:mt-10 w-3/4 lg:w-1/2 relative">
                 <div class="input-group w-full">
-                    <input type="text" placeholder="Cari Barang…" class="input input-bordered w-full" @input="onInput"/>
+                    <input ref="input" type="text" placeholder="Cari Barang…  (Ctrl + i)" class="input input-bordered w-full" @input="onInput"/>
                     <button class="btn btn-square bg-color1 border-color1 hover:bg-color2 hover:border-color2">
                         <Icon icon="akar-icons:search"  class="text-xl"/>
                     </button>
@@ -18,7 +18,7 @@
 
             <TableItems class="w-[90%] lg:w-3/4 mt-10 h-96" :items="items"/>
             <span v-show="notFound" class="text-xl -mt-80">transaksi tidak ditemukan </span>
-            <TableLoad v-show="isLoad" class="absolute w-[90%] lg:w-3/4 z-[99] top-32"/>
+            <TableLoad v-show="isLoad" class="absolute w-[90%] lg:w-3/4 z-[99] top-40 lg:top-32"/>
             <button class="btn mt-10 w-1/2 bg-color1 border-color1 hover:bg-color2 hover:border-color2" @click="this.$router.push('items/add')">Tambah Barang</button> 
 
         </div>
@@ -54,6 +54,11 @@ export default {
             })
             this.items = found
             found.length == 0 ? this.notFound = true : this.notFound = false
+        },
+        onKeyboard(e){
+            const key = e.key
+            if (e.ctrlKey && key == 'i')this.$refs.input.focus()
+            
         }
     },
     created(){
@@ -73,6 +78,10 @@ export default {
             this.items = items
             this.data = items
         })
+    },
+    mounted(){
+        this.$refs.input.focus()
+        document.addEventListener('keydown',this.onKeyboard)
     }
 }
 </script>

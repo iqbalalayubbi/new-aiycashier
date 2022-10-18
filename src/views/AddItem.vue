@@ -22,20 +22,20 @@
                     <img src="https://placeimg.com/192/192/people" />
                 </div>
             </div>
-            <div class="flex w-3/4 justify-center gap-5">
-                <div class="w-1/3 flex flex-col gap-3 mt-10">
-                    <Input nama="nama Barang" ref="nama"/>
-                    <Input nama="kategori" ref="kategori"/>
-                    <Input nama="satuan" ref="satuan"/>
+            <div class="flex w-[90%] lg:w-3/4 justify-center gap-5">
+                <div class="w-1/2 lg:w-1/3 flex flex-col gap-3 mt-10">
+                    <Input nama="nama Barang" ref="nama" @onFocus="onFocus('nama')" @onInput="onInput"/>
+                    <Input nama="kategori" ref="kategori" @onFocus="onFocus('kategori')" @onInput="onInput"/>
+                    <Input nama="satuan" ref="satuan" @onFocus="onFocus('satuan')" @onInput="onInput"/>
                 </div>
-                <div class="w-1/3 flex flex-col gap-3 mt-10">
-                    <Input nama="modal" ref="modal"/>
-                    <Input nama="harga" ref="harga"/>
-                    <Input nama="stok" ref="stok"/>
+                <div class="w-1/2 lg:w-1/3 flex flex-col gap-3 mt-10">
+                    <Input nama="modal" ref="modal" @onFocus="onFocus('modal')" @onInput="onInput"/>
+                    <Input nama="harga" ref="harga" @onFocus="onFocus('harga')" @onInput="onInput"/>
+                    <Input nama="stok" ref="stok" @onFocus="onFocus('stok')" @onInput="onInput"/>
                 </div>
             </div>
-            <button class="btn mt-5 w-1/3 bg-color1 border-color1 hover:bg-color2 hover:border-color2" @click="clickBtn('simpan')">Simpan</button> 
-            <button class="btn w-1/3 mt-5" @click="this.$router.push('/items')">Kembali</button> 
+            <button ref="btnSimpan" class="btn mt-5 w-[90%] lg:w-1/3 bg-color1 border-color1 hover:bg-color2 hover:border-color2" @click="clickBtn('simpan')">Simpan</button> 
+            <button class="btn w-[90%] lg:w-1/3 mt-5" @click="this.$router.push('/items')">Kembali</button> 
         </div>
         <div v-show="isLoad" class="w-screen absolute top-0 left-0 h-screen bg-black opacity-50 z-10"></div>
         <Icon v-show="isLoad" icon="line-md:loading-loop" class="text-9xl text-slate-200 z-[20] absolute top-60 left-0 mx-auto w-full"/>
@@ -50,43 +50,106 @@ import axios from 'axios'
 export default {
     data(){
         return{
-            isLoad:false
+            isLoad:false,
+            inFocus:'nama',
+            inValid:false
         }
     },
     components:{Navbar,Input},
     methods:{
-        clickBtn(btn){
-            const token = JSON.parse(localStorage.getItem('token'))
-            if(btn == 'simpan'){
-                const ref = this.$refs
-                const nama = ref.nama.$refs.input.value
-                const kategori = ref.kategori.$refs.input.value
-                const satuan = ref.satuan.$refs.input.value
-                const modal = ref.modal.$refs.input.value
-                const harga = ref.harga.$refs.input.value
-                const stok = ref.stok.$refs.input.value
-                
-                // play loading
-                this.isLoad = true
-                axios.post(`https://aiycashier.herokuapp.com/items/${token}`,{
-                    nama,kategori,satuan,modal,harga,stok
-                })
-                .finally(() => this.isLoad = false)
-                .then(res => {
-                    const data = res.data
-                    this.$swal.fire({
-                        position: 'center',
-                        icon: 'success',
-                        title: data.status,
-                        text:data.msg,
-                        showConfirmButton: false,
-                        timer: 500
-                    }).then(() => {
-                        this.$router.push('/items')
-                    })
-                })
+        onInput(){
+            this.checkInput()
+        },
+        checkInput(){
+            const ref = this.$refs
+            const namaLeng = ref.nama.$refs.input.value.length
+            const kategoriLeng = ref.kategori.$refs.input.value.length
+            const satuanLeng = ref.satuan.$refs.input.value.length
+            const modalLeng = ref.modal.$refs.input.value.length
+            const hargaLeng = ref.harga.$refs.input.value.length
+            const stokLeng = ref.stok.$refs.input.value.length
+            this.$refs.btnSimpan.setAttribute('disabled',false)
+            if (namaLeng !== 0  && kategoriLeng !== 0 && satuanLeng !== 0 && modalLeng !== 0 && hargaLeng !== 0 && stokLeng !== 0){
+                this.inValid = true
+                this.$refs.btnSimpan.disabled = false
             }
+        },
+        onFocus(el){
+            this.inFocus = el
+            this.checkInput()
+        },
+        onKeyboard(e){
+            const key = e.key
+            const ref = this.$refs
+            if (key == 'Enter'){
+                if (this.inFocus == 'nama'){
+                    this.inFocus = 'kategori'
+                    ref.kategori.$refs.input.focus()
+                }
+                else if (this.inFocus == 'kategori'){
+                    this.inFocus = 'satuan'
+                    ref.satuan.$refs.input.focus()
+                }
+                else if (this.inFocus == 'satuan'){
+                    this.inFocus = 'modal'
+                    ref.modal.$refs.input.focus()
+                }
+                else if (this.inFocus == 'modal'){
+                    this.inFocus = 'harga'
+                    ref.harga.$refs.input.focus()
+                }
+                else if (this.inFocus == 'harga'){
+                    this.inFocus = 'stok'
+                    ref.stok.$refs.input.focus()
+                }
+                else if (this.inFocus == 'stok' && inValid){
+                    this.inFocus = 'nama'
+                    ref.nama.$refs.input.focus()
+                    this.addItem()
+                }
+            
+            }
+        },
+        clickBtn(btn){
+            if(btn == 'simpan')this.addItem()
+        },
+        addItem(){
+            const token = JSON.parse(localStorage.getItem('token'))
+            // play loading
+            this.isLoad = true
+            const ref = this.$refs
+            // data item
+            const nama = ref.nama.$refs.input.value
+            const kategori = ref.kategori.$refs.input.value
+            const satuan = ref.satuan.$refs.input.value
+            const modal = ref.modal.$refs.input.value
+            const harga = ref.harga.$refs.input.value
+            const stok = ref.stok.$refs.input.value
+            axios.post(`https://aiycashier.herokuapp.com/items/${token}`,{
+                    nama,kategori,satuan,modal,harga,stok
+            })
+            .finally(() => this.isLoad = false)
+            .then(res => {
+                const data = res.data
+                this.$swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: data.status,
+                    text:data.msg,
+                    showConfirmButton: false,
+                    timer: 500
+                }).then(() => {
+                    this.$router.push('/items')
+                })
+            })
         }
+    },
+    created(){
+        document.addEventListener('keydown',this.onKeyboard)
+    },
+    mounted(){
+        this.$refs.nama.$refs.input.focus()
+        this.$refs.btnSimpan.disabled = true
     }
 }
 </script>

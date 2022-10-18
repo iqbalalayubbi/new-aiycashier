@@ -5,8 +5,9 @@
     <div class="lg:w-full w-screen relative">
       <!-- content -->
       <div class="flex items-center mt-10 flex-col">
+      <!-- display total -->
         <div
-          class="border-color1 lg:mt-0 mt-10 border-2 lg:w-1/2 w-[70%] h-16 lg:h-28 rounded-xl flex justify-end items-center px-5"
+          class="border-color1 lg:mt-0 mt-10 border-2 lg:w-1/2 w-[70%] h-24 lg:h-28 rounded-xl flex justify-end items-center px-5"
         >
           <h1 class="text-xl lg:text-4xl text-color1">Rp{{ total }}</h1>
         </div>
@@ -15,7 +16,7 @@
           <div class="input-group w-full">
             <input
               type="text"
-              placeholder="Cari Barang…"
+              placeholder="Cari Barang…   (Ctrl + i)"
               class="input input-bordered w-full" ref="input" @input="onInput"
             />
             <button
@@ -76,8 +77,8 @@
     <PopupItems
       :items="items"
       v-show="chooseItem"
-      class="absolute w-screen h-screen"
-      @clickBg="this.chooseItem = false"
+      class="absolute w-full h-screen overflow-hidden"
+      @clickBg="closeItems"
       @clickItem="clickItem"
     />
 
@@ -123,9 +124,13 @@ export default {
     };
   },
   methods: {
+    closeItems(){
+      this.chooseItem = false
+      this.$refs.input.focus()
+    },
     onTyping(e){
       const key = e.key 
-      // open and close menu choose item
+      if (e.ctrlKey && key == 'i')this.$refs.input.focus()
       if (key == 'Enter'){
         this.chooseItem = true
       }else if (key == 'Escape'){

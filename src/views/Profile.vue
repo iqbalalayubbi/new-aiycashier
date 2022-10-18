@@ -31,7 +31,7 @@
                 <div class="w-1/3 flex flex-col gap-3 mt-10">
                     <Input nama="role" ref="role" :val="user.role"/>
                     <Input nama="alamat" ref="alamat"/>
-                    <Input nama="stok" ref="stok"/>
+                    <Input nama="umur" ref="umur"/>
                 </div>
             </div>
             <button class="btn mt-5 w-1/3 bg-color1 border-color1 hover:bg-color2 hover:border-color2" @click="clickBtn('simpan')">Simpan</button> 

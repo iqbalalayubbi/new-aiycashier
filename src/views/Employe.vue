@@ -5,7 +5,7 @@
         <div class="lg:w-full w-screen flex flex-col items-center">
             <div class="form-control mt-20 lg:mt-10 lg:w-1/2 w-3/4 ">
                <div class="input-group w-full">
-                  <input type="text" placeholder="username" class="input input-bordered w-full" @input="onInput"/>
+                  <input ref="input" type="text" placeholder="username...  (Ctrl + i)" class="input input-bordered w-full" @input="onInput"/>
                   <button class="btn btn-square bg-color1 border-color1 hover:bg-color2 hover:border-color2">
                      <Icon icon="akar-icons:search"  class="text-xl"/>
                   </button>
@@ -50,6 +50,10 @@ export default {
             tableRef.employes = findEmploye
             if (findEmploye.length == 0) this.notFound = true
             else this.notFound = false
+        },
+        onKeyboard(e){
+            const key = e.key
+            if (e.ctrlKey && key == 'i')this.$refs.input.focus()
         }
     },
     components:{Navbar,Input,ProfileMenu,TableEmploye,NavMobile},
@@ -65,6 +69,10 @@ export default {
                 this.$router.push('/dashboard')
             }
         })
+    },
+    mounted(){
+        this.$refs.input.focus()
+        document.addEventListener('keydown',this.onKeyboard)
     }
 }
 </script>
