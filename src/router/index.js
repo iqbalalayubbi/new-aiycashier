@@ -81,6 +81,11 @@ const routes = [
     name: 'Upload-View',
     component: () => import('../views/Upload.vue')
   },
+  {
+    path: '/password',
+    name: 'Password-View',
+    component: () => import('../views/Password.vue')
+  },
   
 ]
 

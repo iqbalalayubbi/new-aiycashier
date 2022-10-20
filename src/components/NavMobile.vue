@@ -6,11 +6,6 @@
             <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52 border-base-300">
                 <ProfileMenu class="mt-12 self-center" :isOpen="false"/>
                 <li v-for="(menu,i) in nav" :key="i" @click="this.$router.push(menu.link)"><a>{{menu.nama}}</a></li>
-                <!-- <li @click="this.$router.push('cash')"><a>Kasir</a></li>
-                <li @click="this.$router.push('employe')"><a>Karyawan</a></li>
-                <li @click="this.$router.push('items')"><a>Barang</a></li>
-                <li @click="this.$router.push('chart')"><a>Statistik</a></li>
-                <li @click="this.$router.push('shop')"><a>Toko</a></li> -->
                 <li @click="logout"><a class="bg-red-500 text-white">Keluar</a></li>
             </ul>
         </div>
@@ -26,12 +21,13 @@ export default {
         return{
             nav:[],
             allMenu:[
-                {nama:'Dashboard',link:'dashboard'},
-                {nama:'Kasir',link:'kasir'},
-                {nama:'Karyawan',link:'karyawan'},
-                {nama:'Barang',link:'barang'},
-                {nama:'Statistik',link:'statistik'},
-                {nama:'Toko',link:'toko'},
+                {nama:'Dashboard',link:'/dashboard'},
+                {nama:'Kasir',link:'/kasir'},
+                {nama:'Karyawan',link:'/karyawan'},
+                {nama:'Barang',link:'/barang'},
+                {nama:'Statistik',link:'/statistik'},
+                {nama:'Toko',link:'/toko'},
+                {nama:'Password',link:'/password'},
             ]
         }
     },

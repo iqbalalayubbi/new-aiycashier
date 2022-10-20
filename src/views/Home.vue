@@ -2,7 +2,7 @@
   <div>
     <Navbar class="fixed top-0 transition-all duration-300" :class="[isScroll ? 'bg-base-300 z-10' : 'bg-transparent text-white']" @clickMenu="clickMenu" @menuMobile="menuMobile"/>
     <Beranda/>
-    <DataApp class="lg:mt-96 mt-96"/>
+    <DataApp class="lg:mt-96 mt-[420px] md:mt-[700px]"/>
     <Fitur class="lg:mt-40 mt-20" id="fitur"/>
     <CardFitur class="mt-10"/>
     <Tentang class="mt-40" id="tentang"/>

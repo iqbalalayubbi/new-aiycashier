@@ -4,7 +4,7 @@
     @mouseenter="isOpen = true"
     @mouseleave="isOpen = false"
   >
-    <ProfileMenu class="mt-12 self-center" :isOpen="isOpen" v-show="finish" />
+    <ProfileMenu class="mt-8 self-center" :isOpen="isOpen" v-show="finish" />
     <div
       v-for="(m, i) in menu"
       :key="i"
@@ -73,6 +73,10 @@ export default {
           icon: "entypo:shop",
           nama: "Toko",
         },
+        {
+          icon: "carbon:password",
+          nama: "Password",
+        },
       ],
       menu: [],
     };
@@ -86,6 +90,7 @@ export default {
       if (nav == "barang") this.$router.push("/barang");
       if (nav == "statistik") this.$router.push("/statistik");
       if (nav == "toko") this.$router.push("/toko");
+      if (nav == "password") this.$router.push("/password");
       if (nav == "keluar") {
         this.$swal.fire({
           title: "Yakin ingin keluar?",

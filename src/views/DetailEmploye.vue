@@ -27,7 +27,7 @@
         <div
           class="w-24 rounded-full ring ring-base-300 ring-offset-base-100 ring-offset-2"
         >
-          <img src="https://placeimg.com/192/192/people" />
+          <img :src="[employe[0].image == undefined ? src : employe[0].image ]" />
         </div>
       </div>
       <div class="flex w-[90%] lg:w-3/4 justify-center gap-5 mt-5">
@@ -36,7 +36,7 @@
             nama="nama"
             ref="nama"
             inputClass="bg-base-300 border-slate-300"
-            :val="employe[0].name"
+            :val="employe[0].nama"
           />
           <Input
             nama="username"
@@ -87,12 +87,14 @@ import Navbar from "@/components/Navbar.vue";
 import Input from "@/components/Input.vue";
 import axios from "axios";
 import path from '../utils/path.js'
+import img from '../assets/default.svg'
 
 export default {
   data() {
     return {
       isLoad: false,
       employe: [],
+      src:img
     };
   },
   components: { Navbar, Input },

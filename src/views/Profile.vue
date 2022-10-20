@@ -54,23 +54,23 @@
       </div>
       <!-- akhir profile img -->
 
-      <div class="flex w-3/4 justify-center gap-5">
-        <div class="w-1/3 flex flex-col gap-3 mt-10">
+      <div class="flex w-[90%] lg:w-3/4 justify-center gap-5 lg:mt-0 mt-10">
+        <div class="w-1/2 lg:w-1/3 flex flex-col gap-3 mt-10">
           <Input nama="nama" ref="nama" :val="user.nama" />
           <Input nama="username" ref="username" :val="user.username" />
         </div>
-        <div class="w-1/3 flex flex-col gap-3 mt-10">
-          <Input nama="role" ref="role" :val="user.role"/>
+        <div class="w-1/2 lg:w-1/3 flex flex-col gap-3 mt-10">
           <Input nama="no hp" ref="no_hp" :val="user.no_hp" />
+          <Input nama="role" ref="role" :val="user.role" inputClass="bg-slate-300 border-none"/>
         </div>
       </div>
       <button
-        class="btn mt-5 w-1/3 bg-color1 border-color1 hover:bg-color2 hover:border-color2"
+        class="btn mt-5 w-[80%] lg:w-1/3 bg-color1 border-color1 hover:bg-color2 hover:border-color2"
         @click="clickBtn('simpan')"
       >
         Simpan
       </button>
-      <button class="btn w-1/3 mt-5" @click="this.$router.go(-1)">
+      <button class="btn w-[80%] lg:w-1/3 mt-5" @click="this.$router.go(-1)">
         Kembali
       </button>
     </div>
@@ -159,6 +159,9 @@ export default {
       if (result.image !== undefined) this.src = result.image
     });
   },
+  mounted(){
+    this.$refs.role.$refs.input.disabled = true
+  }
 };
 </script>
 

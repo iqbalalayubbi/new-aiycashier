@@ -31,7 +31,7 @@
             </div>
           </td>
           <td>
-            {{ employe.name }}
+            {{ employe.nama }}
           </td>
           <td>{{ employe.no_hp }}</td>
           <th>

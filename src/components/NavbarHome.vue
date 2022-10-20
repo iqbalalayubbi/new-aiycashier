@@ -23,7 +23,7 @@
   <div class="navbar-end flex gap-2 lg:gap-5">
     <router-link to="/register"><a class="btn">Daftar</a></router-link>
     <router-link to="/login">
-      <a class="btn bg-transparent border-none hover:bg-blue-600" :class="[isScroll ? 'text-slate-600' : 'text-white']">Masuk</a>
+      <a class="btn bg-transparent border-none hover:bg-blue-600 hover:text-white" :class="[isScroll ? 'text-slate-600' : 'text-white']">Masuk</a>
     </router-link>
   </div>
 </div>

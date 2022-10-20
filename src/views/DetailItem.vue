@@ -47,7 +47,7 @@
             <div
               class="w-full rounded-full ring ring-base-300 ring-offset-base-100 ring-offset-2"
             >
-              <img :src="items[0].image" alt="item" ref="image"/>
+              <img :src="[items[0].image == undefined ? src : items[0].image ]" alt="item" ref="image"/>
             </div>
           </div>
         </div>
@@ -135,6 +135,7 @@ import Input from "@/components/Input.vue";
 import LoadDetailItem from "@/components/LoadDetailItem.vue";
 import axios from "axios";
 import path from "../utils/path.js";
+import img from '../assets/defaut-item.svg'
 
 export default {
   data() {
@@ -143,6 +144,7 @@ export default {
       isLoad: false,
       item: {},
       selectedFile: "",
+      src:img
     };
   },
   methods: {
@@ -181,7 +183,10 @@ export default {
     },
 
     onFileChange(e) {
+      const image = this.$refs.image
       const selectedFile = e.target.files[0]; // accessing file
+      const url = URL.createObjectURL(selectedFile)
+      image.setAttribute('src',url)
       this.selectedFile = selectedFile;
     },
     saveItem() {
@@ -211,11 +216,6 @@ export default {
         const result = res.data;
         this.items = result;
       });
-  },
-  mounted(){
-    const img = this.$refs.image
-    console.log(img)
-    // img.setAttribute('src','https://firebasestorage.googleapis.com/v0/b/vue-firebase-263de.appspot.com/o/items%2F1666169043588.jpg?alt=media&token=c9f64bb7-072a-4dab-a9eb-70ddbed4a648')
   }
 };
 </script>
