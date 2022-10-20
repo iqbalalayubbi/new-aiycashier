@@ -63,7 +63,7 @@ export default {
   },
   methods: {
     clickDetail(id) {
-      this.$router.push(`/items/${id}`);
+      this.$router.push(`/barang/${id}`);
     },
     deleteItem(id) {
       this.$emit('deleteItem',id)

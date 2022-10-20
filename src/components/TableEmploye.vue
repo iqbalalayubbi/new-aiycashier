@@ -81,7 +81,7 @@ export default {
   },
   methods: {
     clickDetail(username) {
-      this.$router.push(`/employe/${username}`);
+      this.$router.push(`/karyawan/${username}`);
     },
     clickDel(username) {
       this.$swal
