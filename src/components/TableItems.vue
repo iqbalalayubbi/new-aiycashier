@@ -22,7 +22,7 @@
               <div class="avatar">
                 <div class="mask mask-squircle w-12 h-12">
                   <img
-                    :src="item.image"
+                    :src="[item.image == undefined ? src : item.image ]"
                     alt="Avatar Tailwind CSS Component"
                   />
                 </div>
@@ -57,7 +57,14 @@
 </template>
 
 <script>
+import img from '../assets/defaut-item.svg'
+
 export default {
+  data(){
+    return{
+      src:img
+    }
+  },
   props: {
     items: String,
   },
