@@ -101,7 +101,7 @@ export default {
       };
       this.isLoad = true
       axios
-        .post(`http://localhost:3000/upload/shop/${token}`, formData)
+        .post(`${path}upload/shop/${token}`, formData)
         .then((res) => {
           axios.put(`${path}shop/${token}`, shop)
             .finally(() => this.isLoad = false)

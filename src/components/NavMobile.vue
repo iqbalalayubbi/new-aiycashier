@@ -19,6 +19,7 @@
 <script>
 import ProfileMenu from '@/components/ProfileMenu.vue'
 import axios from 'axios'
+import path from '../utils/path.js'
 
 export default {
     data(){
@@ -26,11 +27,11 @@ export default {
             nav:[],
             allMenu:[
                 {nama:'Dashboard',link:'dashboard'},
-                {nama:'Kasir',link:'cash'},
-                {nama:'Karyawan',link:'employe'},
-                {nama:'Barang',link:'items'},
-                {nama:'Statistik',link:'chart'},
-                {nama:'Toko',link:'shop'},
+                {nama:'Kasir',link:'kasir'},
+                {nama:'Karyawan',link:'karyawan'},
+                {nama:'Barang',link:'barang'},
+                {nama:'Statistik',link:'statistik'},
+                {nama:'Toko',link:'toko'},
             ]
         }
     },
@@ -43,7 +44,7 @@ export default {
     },
     created(){
         const token = JSON.parse(localStorage.getItem('token'))
-        axios.get(`https://aiycashier.herokuapp.com/${token}`).then(res => {
+        axios.get(`${path}${token}`).then(res => {
             const result = res.data.data
             const role = result.role
             if (role == 'admin'){
