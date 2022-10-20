@@ -46,7 +46,7 @@ export default {
   },
   methods:{
     onScroll(){
-        if (window.scrollY > 300){
+        if (window.scrollY > 100){
           this.isScroll = true
           this.src = this.logo.logoBlack
         }else{

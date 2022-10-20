@@ -11,11 +11,13 @@
       class="flex text-white items-center ml-2 gap-3 hover:bg-white py-3 pl-2 hover:text-color1 hover:rounded-l-md hover:cursor-pointer"
       @click="clickMenu(m.nama)"
       v-show="finish"
+      :class="[m.nama.toLowerCase() == isActive ? 'bg-white text-color1' : '']"
     >
       <Icon :icon="m.icon" class="text-2xl" />
       <span v-show="isOpen">{{ m.nama }}</span>
     </div>
 
+      <!-- :class="[m.nama.toLowerCase() == this.$router.pa]" -->
     <!-- logout button -->
     <div
       class="flex text-white bg-red-600 items-center ml-2 gap-3 hover:bg-red-700 py-3 pl-2 hover:text-white hover:rounded-l-md hover:cursor-pointer"
@@ -37,6 +39,7 @@
 import ProfileMenu from "@/components/ProfileMenu.vue";
 import LoadNav from "@/components/LoadNav.vue";
 import axios from "axios";
+import path from '../utils/path.js'
 
 export default {
   data() {
@@ -44,6 +47,7 @@ export default {
       isOpen: false,
       isLoad: false,
       finish: false,
+      isActive:'',
       dataMenu: [
         {
           icon: "ant-design:home-filled",
@@ -67,7 +71,7 @@ export default {
         },
         {
           icon: "entypo:shop",
-          nama: "Shop",
+          nama: "Toko",
         },
       ],
       menu: [],
@@ -76,12 +80,12 @@ export default {
   methods: {
     clickMenu(menu) {
       const nav = menu.toLowerCase();
-      if (nav == "dashboard") this.$router.push("/dashboard");
-      if (nav == "kasir") this.$router.push("/cash");
-      if (nav == "karyawan") this.$router.push("/employe");
-      if (nav == "barang") this.$router.push("/items");
-      if (nav == "statistik") this.$router.push("/chart");
-      if (nav == "shop") this.$router.push("/shop");
+      if (nav == "dashboard")this.$router.push("/dashboard")
+      if (nav == "kasir") this.$router.push("/kasir");
+      if (nav == "karyawan") this.$router.push("/karyawan");
+      if (nav == "barang") this.$router.push("/barang");
+      if (nav == "statistik") this.$router.push("/statistik");
+      if (nav == "toko") this.$router.push("/toko");
       if (nav == "keluar") {
         this.$swal.fire({
           title: "Yakin ingin keluar?",
@@ -94,6 +98,7 @@ export default {
           cancelButtonText: "Batal",
         }).then((result) => {
           if (result.isConfirmed) {
+              localStorage.removeItem('token')
               this.$router.push("/login");
           }
         });
@@ -102,11 +107,14 @@ export default {
   },
   components: { ProfileMenu, LoadNav },
   created() {
+    const currPath = window.location.pathname.split('/')[1]
+    this.isActive = currPath
+
     const token = JSON.parse(localStorage.getItem("token"));
     this.isLoad = true;
 
     axios
-      .get(`https://aiycashier.herokuapp.com/${token}`)
+      .get(`${path}${token}`)
       .finally(() => {
         this.isLoad = false;
         this.finish = true;
@@ -115,17 +123,21 @@ export default {
         const data = res.data.data;
         const role = data.role;
         console.log(role);
-        if (role == "admin") this.menu = this.dataMenu;
-        if (role == "kasir") {
-          this.menu[0] = this.dataMenu[0];
-          this.menu[1] = this.dataMenu[1];
+        if (role == "admin") {
+          this.menu = this.dataMenu
         }
-        if (role == "pengelola") {
-          console.log("benar");
-          this.menu[0] = this.dataMenu[0];
-          this.menu[1] = this.dataMenu[1];
-          this.menu[2] = this.dataMenu[3];
-          this.menu[3] = this.dataMenu[4];
+        else{
+          if (role == "kasir") {
+            this.menu[0] = this.dataMenu[0];
+            this.menu[1] = this.dataMenu[1];
+          }
+          if (role == "pengelola") {
+            console.log("benar");
+            this.menu[0] = this.dataMenu[0];
+            this.menu[1] = this.dataMenu[1];
+            this.menu[2] = this.dataMenu[3];
+            this.menu[3] = this.dataMenu[4];
+          }
         }
       });
   },

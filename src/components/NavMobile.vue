@@ -11,7 +11,7 @@
                 <li @click="this.$router.push('items')"><a>Barang</a></li>
                 <li @click="this.$router.push('chart')"><a>Statistik</a></li>
                 <li @click="this.$router.push('shop')"><a>Toko</a></li> -->
-                <li @click="this.$router.push('login')"><a class="bg-red-500 text-white">Keluar</a></li>
+                <li @click="logout"><a class="bg-red-500 text-white">Keluar</a></li>
             </ul>
         </div>
 </template>
@@ -35,6 +35,12 @@ export default {
         }
     },
     components:{ProfileMenu},
+    methods:{
+        logout(){
+            localStorage.removeItem('token')
+            this.$router.push('login')
+        }
+    },
     created(){
         const token = JSON.parse(localStorage.getItem('token'))
         axios.get(`https://aiycashier.herokuapp.com/${token}`).then(res => {

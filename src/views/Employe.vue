@@ -13,7 +13,7 @@
             </div>
             <TableEmploye class="w-[90%] lg:w-3/4 mt-5" ref="table"/>
             <span v-show="notFound" class="text-xl mt-5">karyawan tidak ditemukan </span>
-            <button class="btn mt-10 w-1/2 bg-color1 border-color1 hover:bg-color2 hover:border-color2" @click="this.$router.push('/employe/add')">Tambah Karyawan</button>
+            <button class="btn mt-10 w-1/2 bg-color1 border-color1 hover:bg-color2 hover:border-color2" @click="this.$router.push('/karyawan/tambah')">Tambah Karyawan</button>
             <div v-show="isLoad" class="w-screen absolute top-0 left-0 h-screen bg-black opacity-50 z-[20]"></div>
             <Icon v-show="isLoad" icon="line-md:loading-loop" class="text-9xl text-slate-200 z-[20] absolute top-60 left-0 mx-auto w-full"/>
         </div>
@@ -27,6 +27,7 @@ import ProfileMenu from '@/components/ProfileMenu.vue'
 import TableEmploye from '@/components/TableEmploye.vue'
 import NavMobile from '@/components/NavMobile.vue'
 import axios from 'axios'
+import path from '../utils/path.js'
 
 export default {
     data(){
@@ -60,7 +61,7 @@ export default {
     created(){
         this.isLoad = true
         const token = JSON.parse(localStorage.getItem('token'))
-        axios.get(`https://aiycashier.herokuapp.com/${token}`)
+        axios.get(`${path}${token}`)
         .finally(() => this.isLoad = false)
         .then(res => {
             const data = res.data.data

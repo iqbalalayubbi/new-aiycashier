@@ -22,7 +22,7 @@
               <div class="avatar">
                 <div class="mask mask-squircle w-12 h-12">
                   <img
-                    src="https://placeimg.com/80/80/people"
+                    :src="item.image"
                     alt="Avatar Tailwind CSS Component"
                   />
                 </div>
@@ -57,8 +57,6 @@
 </template>
 
 <script>
-import axios from "axios";
-
 export default {
   props: {
     items: String,
@@ -68,27 +66,7 @@ export default {
       this.$router.push(`/items/${id}`);
     },
     deleteItem(id) {
-      const token = JSON.parse(localStorage.getItem("token"));
-      this.$swal
-        .fire({
-          title: "Ingin menghapus barang?",
-          showCancelButton: true,
-          confirmButtonText: "Hapus",
-        })
-        .then((result) => {
-          /* Read more about isConfirmed, isDenied below */
-          if (result.isConfirmed) {
-            axios.delete(`http://localhost:3000/items/${id}/${token}`).then(() => {
-              this.$swal.fire({
-                position: "center",
-                icon: "success",
-                title: "Barang berhasil dihapus",
-                showConfirmButton: false,
-                timer: 1500,
-              }).then(() => this.$router.push('/items'))
-            });
-          }
-        });
+      this.$emit('deleteItem',id)
     },
   },
 };

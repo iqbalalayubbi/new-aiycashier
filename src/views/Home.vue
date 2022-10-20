@@ -25,7 +25,7 @@ export default {
     components:{Navbar,Beranda,DataApp,Fitur,CardFitur,Tentang,Footer},
     methods:{
         onScroll(){
-            window.scrollY > 300 ? this.isScroll = true : this.isScroll = false
+            window.scrollY > 100 ? this.isScroll = true : this.isScroll = false
         },
         clickMenu(menu){
             let top

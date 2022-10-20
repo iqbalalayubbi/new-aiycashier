@@ -30,6 +30,7 @@ import TableTrans from '@/components/TableTrans.vue'
 import SliderCard from '@/components/SliderCard.vue'
 import NavMobile from '@/components/NavMobile.vue'
 import axios from 'axios'
+import path from '../utils/path.js'
 
 export default {
     components:{Navbar,CardDash,Input,TableTrans,SliderCard,NavMobile},
@@ -61,14 +62,16 @@ export default {
             const date = this.$refs.date.$refs.input.value
             const newDate = date.split('-').reverse().join('/')
             const findTrans = []
+            let tanggal = ''
             this.dataTrans.forEach(tr => {
                 const d = tr.tanggal.split(' ')[0]
                 if (d == newDate){
+                    tanggal = tr.tanggal
                     tr.items.forEach(tran => findTrans.push(tran))
                 }
             })
             this.trans = [{
-                tanggal:newDate,
+                tanggal:tanggal,
                 items:findTrans
             }]
             if (date == '') this.trans = this.dataTrans
@@ -104,23 +107,22 @@ export default {
     created(){
         this.isLoad = true
         const token = JSON.parse(localStorage.getItem("token"));
-
         // get all laba
-        axios.get(`https://aiycashier.herokuapp.com/chart/${token}`)
+        axios.get(`${path}chart/${token}`)
         .then(res => {
             const untung = res.data.untung
             this.cards[0].val = untung
         })
 
         // get total item
-        axios.get(`https://aiycashier.herokuapp.com/items/total/${token}`)
+        axios.get(`${path}items/total/${token}`)
         .then(res => {
             const total = res.data.total
             this.cards[2].val = total
         })
 
         // get all transaksi
-        axios.get(`https://aiycashier.herokuapp.com/transaksi/${token}`)
+        axios.get(`${path}transaksi/${token}`)
             .finally(() => this.isLoad = false)
             .then(res => {
                 const result = res.data.data

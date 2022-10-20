@@ -19,8 +19,8 @@
               <div class="avatar">
                 <div class="mask mask-squircle w-12 h-12">
                   <img
-                    src="https://placeimg.com/80/80/people"
-                    alt="Avatar Tailwind CSS Component"
+                    :src="[employe.image !== undefined ? employe.image : src ]"
+                    alt="profile karyawan"
                   />
                 </div>
               </div>
@@ -67,6 +67,8 @@
 
 <script>
 import axios from "axios";
+import path from '../utils/path.js'
+import img from '../assets/default.svg'
 
 export default {
   data() {
@@ -74,6 +76,7 @@ export default {
       employes: [],
       dataEmployes: [],
       isLoad: false,
+      src:img
     };
   },
   methods: {
@@ -97,7 +100,7 @@ export default {
             const token = JSON.parse(localStorage.getItem('token'))
             axios
               .delete(
-                `https://aiycashier.herokuapp.com/employe/${username}/${token}`
+                `${path}employe/${username}/${token}`
               )
               .finally(() => this.isLoad = false)
               .then(() => {
@@ -113,7 +116,7 @@ export default {
   created() {
     const token = JSON.parse(localStorage.getItem("token"));
     axios
-      .get(`https://aiycashier.herokuapp.com/employe/${token}`)
+      .get(`${path}employe/${token}`)
       .then((res) => {
         const data = res.data;
         this.employes = data.data;

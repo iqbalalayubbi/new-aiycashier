@@ -4,8 +4,8 @@
         <NavMobile/>
         <div class="lg:w-full w-screen flex justify-center mt-20">
             <!-- content -->
-            <div class="lg:w-1/2 w-full flex flex-col">
-                <button class="btn w-40 self-center mb-10">untung</button>
+            <div class="lg:w-[60%] w-full flex flex-col">
+                <button class="btn w-40 self-center mb-10" @click="changeChart">{{btnName}}</button>
                 <canvas id="myChart" class="w-full"></canvas>
             </div>
         </div>
@@ -18,46 +18,68 @@ import Chart from 'chart.js/auto'
 import Navbar from '@/components/Navbar.vue'
 import NavMobile from '@/components/NavMobile.vue'
 import axios from 'axios'
+import path from '../utils/path'
+import tempChart from '../utils/temChart.js'
 
 export default {
+    data(){
+        return{
+            tanggal:[],
+            untung:[],
+            chartType:'bar',
+            nama:[],
+            totalItem:[],
+            btnName:'lihat barang terlaris'
+        }
+    },
     components:{Navbar,NavMobile},
-    mounted(){
-        const ctx = document.getElementById('myChart').getContext('2d');
-        const myChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-                datasets: [{
-                    label: '# of Votes',
-                    data: [12, 19, 3, 5, 2, 3],
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(153, 102, 255, 0.2)',
-                        'rgba(255, 159, 64, 0.2)'
-                    ],
-                    borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)'
-                    ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
+    methods:{
+        changeChart(){
+            console.log('click')
+            Chart.getChart('myChart').destroy();
+            if (this.chartType == 'bar'){
+                this.btnName = 'lihat keuntungan'
+                this.chartType = 'line'
+                const ctx = document.getElementById('myChart').getContext('2d');
+                const myChart = new Chart(ctx,tempChart('line','barang terlaris',this.nama,this.totalItem))
+                myChart
+            }else if(this.chartType == 'line'){
+                this.btnName = 'lihat barang terlaris'
+                this.chartType = 'bar'
+                const ctx = document.getElementById('myChart').getContext('2d');
+                const myChart = new Chart(ctx,tempChart('bar','keuntungan',this.tanggal,this.untung))
+                myChart
             }
-        });
-        myChart
+        }
+    },
+    mounted(){
+        const token = JSON.parse(localStorage.getItem('token'))
+
+        axios.get(`${path}chart/profit/${token}`).then(res => {
+            const data = res.data
+            console.log(data)
+            data.forEach(d => {
+                this.tanggal.push(d.tanggal)
+                this.untung.push(d.untung)
+            });
+
+            axios.get(`${path}chart/item/${token}`).then(res => {
+                const data = res.data
+                data.forEach(d => {
+                    this.nama.push(d.nama)
+                    this.totalItem.push(d.all)
+                })
+
+
+                const ctx = document.getElementById('myChart').getContext('2d');
+                const myChart = new Chart(ctx,tempChart(this.chartType,'keuntungan',this.tanggal,this.untung))
+                myChart
+            })
+
+
+
+        })
+
     },
     created(){
         const token = JSON.parse(localStorage.getItem('token'))

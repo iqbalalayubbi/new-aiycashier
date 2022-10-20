@@ -1,11 +1,11 @@
 <template>
   <div class="flex">
     <Navbar />
-    <NavMobile class="z-10"/>
+    <NavMobile class="z-10" />
     <div class="lg:w-full w-screen relative">
       <!-- content -->
       <div class="flex items-center mt-10 flex-col">
-      <!-- display total -->
+        <!-- display total -->
         <div
           class="border-color1 lg:mt-0 mt-10 border-2 lg:w-1/2 w-[70%] h-24 lg:h-28 rounded-xl flex justify-end items-center px-5"
         >
@@ -17,7 +17,9 @@
             <input
               type="text"
               placeholder="Cari Barang…   (Ctrl + i)"
-              class="input input-bordered w-full" ref="input" @input="onInput"
+              class="input input-bordered w-full"
+              ref="input"
+              @input="onInput"
             />
             <button
               class="btn btn-square bg-color1 border-color1 hover:bg-color2 hover:border-color2"
@@ -82,8 +84,15 @@
       @clickItem="clickItem"
     />
 
-    <div v-show="isLoad" class="w-screen absolute top-0 left-0 h-screen bg-black opacity-50 z-10"></div>
-    <Icon v-show="isLoad" icon="line-md:loading-loop" class="text-9xl text-slate-200 z-[20] absolute top-60 left-0 mx-auto w-full"/>
+    <div
+      v-show="isLoad"
+      class="w-screen absolute top-0 left-0 h-screen bg-black opacity-50 z-10"
+    ></div>
+    <Icon
+      v-show="isLoad"
+      icon="line-md:loading-loop"
+      class="text-9xl text-slate-200 z-[20] absolute top-60 left-0 mx-auto w-full"
+    />
   </div>
 </template>
 
@@ -96,6 +105,7 @@ import PopupItems from "@/components/PopupItems.vue";
 import ChoosePay from "@/components/ChoosePay.vue";
 import Pay from "@/components/Pay.vue";
 import axios from "axios";
+import path from "../utils/path.js";
 
 // bank
 import bri from "../assets/bank/bri.svg";
@@ -118,35 +128,35 @@ export default {
       isPopup: false,
       typePay: "",
       namePay: "",
-      itemTrans:[],
-      isLoad:false,
-      inputVal :''
+      itemTrans: [],
+      isLoad: false,
+      inputVal: "",
     };
   },
   methods: {
-    closeItems(){
-      this.chooseItem = false
-      this.$refs.input.focus()
+    closeItems() {
+      this.chooseItem = false;
+      this.$refs.input.focus();
     },
-    onTyping(e){
-      const key = e.key 
-      if (e.ctrlKey && key == 'i')this.$refs.input.focus()
-      if (key == 'Enter'){
-        this.chooseItem = true
-      }else if (key == 'Escape'){
-        this.chooseItem = false
+    onTyping(e) {
+      const key = e.key;
+      if (e.ctrlKey && key == "i") this.$refs.input.focus();
+      if (key == "Enter") {
+        this.chooseItem = true;
+      } else if (key == "Escape") {
+        this.chooseItem = false;
       }
     },
-    onInput(e){
-      const val = e.target.value.toLowerCase()
-      this.inputVal = val
-      const itemFound = []
-      this.dataItems.forEach(item => {
-        if(item.nama.toLowerCase().startsWith(val)){
-          itemFound.push(item)
+    onInput(e) {
+      const val = e.target.value.toLowerCase();
+      this.inputVal = val;
+      const itemFound = [];
+      this.dataItems.forEach((item) => {
+        if (item.nama.toLowerCase().startsWith(val)) {
+          itemFound.push(item);
         }
-      })
-      this.items = itemFound
+      });
+      this.items = itemFound;
     },
     clickItem(item) {
       if (this.itemsId.includes(item.id)) {
@@ -167,8 +177,8 @@ export default {
         this.dataTableItems.push(item);
         this.itemsId.push(item.id);
       }
-      this.$refs.input.value = ''
-      this.$refs.input.focus()
+      this.$refs.input.value = "";
+      this.$refs.input.focus();
       this.chooseItem = false;
     },
     calItem(total) {
@@ -194,50 +204,68 @@ export default {
       this.isPay = true;
     },
     clickPay() {
-      this.isPopup = true;
-      this.isChoosePay = true;
-      this.isPay = false;
+      if (this.dataTableItems.length == 0){
+        this.$swal.fire({
+            position: 'center',
+            icon: 'error',
+            title: 'gagal',
+            text:'keranjang masih kosong',
+            showConfirmButton: false,
+            timer: 1500
+        })
+      }
+      else if (this.dataTableItems.length > 0){
+        this.isPopup = true;
+        this.isChoosePay = true;
+        this.isPay = false;
+      }
+
     },
     paySuccess() {
-      const items = this.$refs.table.$refs.item
-      this.isLoad = true
-      items.forEach(item => {
-        const modal = item.getAttribute('data-modal')
-        const child = item.children
-        const nama = child[1].innerHTML
-        const kategori = child[2].innerHTML
-        const satuan = child[3].innerHTML
-        const harga = child[4].innerHTML
-        const jumlah = child[5].children[0].value
-        const total = child[6].innerHTML
+      const items = this.$refs.table.$refs.item;
+      this.isLoad = true;
+      items.forEach((item) => {
+        const modal = item.getAttribute("data-modal");
+        const id = item.getAttribute("data-id");
+        const child = item.children;
+        const nama = child[1].innerHTML;
+        const kategori = child[2].innerHTML;
+        const satuan = child[3].innerHTML;
+        const harga = child[4].innerHTML;
+        const jumlah = child[5].children[0].value;
+        const total = child[6].innerHTML;
         const itemTable = {
-          nama,kategori,satuan,modal,harga,jumlah,total
-        }
-        this.itemTrans.push(itemTable)
-      })
+          id,
+          nama,
+          kategori,
+          satuan,
+          modal,
+          harga,
+          jumlah,
+          total,
+        };
+        this.itemTrans.push(itemTable);
+      });
       const token = JSON.parse(localStorage.getItem("token"));
       this.isPopup = false;
       this.isChoosePay = false;
       this.isPay = false;
       // make new transaksi
-      axios
-        .post(`https://aiycashier.herokuapp.com/transaksi/${token}`, this.itemTrans)
-        .then((res) => {
-            this.$swal
-              .fire({
-                position: "center",
-                icon: "success",
-                title: "Pembayran Berhasil",
-                showConfirmButton: false,
-                timer: 1500,
-              })
-              .then(() => {
-                  this.isLoad = false
-                  this.dataTableItems = [];
-                  this.itemsId = [];
-                
-              });
-        });
+      axios.post(`${path}transaksi/${token}`, this.itemTrans).then((res) => {
+        this.$swal
+          .fire({
+            position: "center",
+            icon: "success",
+            title: "Pembayran Berhasil",
+            showConfirmButton: false,
+            timer: 1500,
+          })
+          .then(() => {
+            this.isLoad = false;
+            this.dataTableItems = [];
+            this.itemsId = [];
+          });
+      });
     },
     cancelPay() {
       this.isPopup = false;
@@ -254,22 +282,23 @@ export default {
     ChoosePay,
     Pay,
   },
-  mounted(){
-    const input = this.$refs.input
-    input.focus()
+  mounted() {
+    const input = this.$refs.input;
+    input.focus();
   },
   created() {
-    this.isLoad = true
+    this.isLoad = true;
     const token = JSON.parse(localStorage.getItem("token"));
     // get all items
-    axios.get(`https://aiycashier.herokuapp.com/items/${token}`)
-    .finally(() => this.isLoad = false)
-    .then((res) => {
-      const items = res.data.data;
-      this.items = items;
-      this.dataItems = items;
-    });
-    window.addEventListener('keydown',this.onTyping)
+    axios
+      .get(`${path}items/${token}`)
+      .finally(() => (this.isLoad = false))
+      .then((res) => {
+        const items = res.data.data;
+        this.items = items;
+        this.dataItems = items;
+      });
+    window.addEventListener("keydown", this.onTyping);
   },
   updated() {
     const ref = this.$refs;

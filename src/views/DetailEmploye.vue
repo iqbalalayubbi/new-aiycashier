@@ -86,6 +86,7 @@
 import Navbar from "@/components/Navbar.vue";
 import Input from "@/components/Input.vue";
 import axios from "axios";
+import path from '../utils/path.js'
 
 export default {
   data() {
@@ -106,7 +107,7 @@ export default {
         this.isLoad = true;
         const token = JSON.parse(localStorage.getItem("token"));
         axios
-          .post(`https://aiycashier.herokuapp.com/employe/${token}`, {
+          .post(`${path}employe/${token}`, {
             username,
             password,
             role,
@@ -124,11 +125,11 @@ export default {
                   showConfirmButton: false,
                   timer: 2000,
                 })
-                .then(() => this.$router.push("/employe"));
+                .then(() => this.$router.push("/karyawan"));
             }
           });
       } else if (menu == "kembali") {
-        this.$router.push("/employe");
+        this.$router.push("/karyawan");
       }
     },
   },
@@ -147,7 +148,7 @@ export default {
     const token = JSON.parse(localStorage.getItem("token"));
     const id = this.$route.params.id;
     axios
-      .get(`https://aiycashier.herokuapp.com/employe/${id}/${token}`)
+      .get(`${path}employe/${id}/${token}`)
       .then((res) => {
         const result = res.data;
         this.employe = result.data;

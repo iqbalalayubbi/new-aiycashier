@@ -22,52 +22,52 @@ const routes = [
     component: () => import('../views/Dashboard.vue')
   },
   {
-    path: '/cash',
+    path: '/kasir',
     name: 'Cash-View',
     component: () => import('../views/Cash.vue')
   },
   {
-    path: '/employe',
+    path: '/karyawan',
     name: 'Employe-View',
     component: () => import('../views/Employe.vue')
   },
   {
-    path: '/items',
+    path: '/barang',
     name: 'Items-View',
     component: () => import('../views/Items.vue')
   },
   {
-    path: '/shop',
+    path: '/toko',
     name: 'Shop-View',
     component: () => import('../views/Shop.vue')
   },
   {
-    path: '/items/add',
+    path: '/barang/tambah',
     name: 'AddItem-View',
     component: () => import('../views/AddItem.vue')
   },
   {
-    path: '/employe/add',
+    path: '/karyawan/tambah',
     name: 'AddEmploye-View',
     component: () => import('../views/AddEmploye.vue')
   },
   {
-    path: '/shop/data',
+    path: '/toko/data',
     name: 'DataShop-View',
     component: () => import('../views/DataShop.vue')
   },
   {
-    path: '/chart',
+    path: '/statistik',
     name: 'Chart-View',
     component: () => import('../views/Chart.vue')
   },
   {
-    path: '/items/:id',
+    path: '/barang/:id',
     name: 'DetailItem-View',
     component: () => import('../views/DetailItem.vue')
   },
   {
-    path: '/employe/:id',
+    path: '/karyawan/:id',
     name: 'DetailEmploye-View',
     component: () => import('../views/DetailEmploye.vue')
   },
@@ -75,6 +75,11 @@ const routes = [
     path: '/profile',
     name: 'Profile-View',
     component: () => import('../views/Profile.vue')
+  },
+  {
+    path: '/upload',
+    name: 'Upload-View',
+    component: () => import('../views/Upload.vue')
   },
   
 ]

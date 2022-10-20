@@ -68,6 +68,7 @@
 <script>
 import Input from '@/components/Input.vue'
 import axios from 'axios'
+import path from '../utils/path.js'
 
 export default {
     data(){
@@ -109,7 +110,7 @@ export default {
           const ref = this.$refs
           const username = ref.username.$refs.input.value
           const password = ref.password.$refs.input.value
-          axios.post('https://aiycashier.herokuapp.com/login',{username,password})
+          axios.post(`${path}login`,{username,password})
           .finally(() => this.isLoad = false)
           .then(result => {
             const data = result.data
@@ -123,7 +124,7 @@ export default {
                 timer: 1500
             }).then(() => {
                 if (data.isNew){
-                    this.$router.push('/shop/data')
+                    this.$router.push('/toko/data')
                 }else{
                     this.$router.push('/dashboard')
                 }
