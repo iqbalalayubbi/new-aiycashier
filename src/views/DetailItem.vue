@@ -47,7 +47,7 @@
             <div
               class="w-full rounded-full ring ring-base-300 ring-offset-base-100 ring-offset-2"
             >
-              <img :src="[items[0].image == undefined ? src : items[0].image ]" alt="item" ref="image"/>
+              <img :src="src" alt="item" ref="image"/>
             </div>
           </div>
         </div>
@@ -155,7 +155,7 @@ export default {
       const id = this.$route.params.id
       axios
         .post(
-          `http://localhost:3000/upload/item/${token}?id=${id}`,
+          `${path}upload/item/${token}?id=${id}`,
           formData
         )
         .finally(() => {
@@ -215,6 +215,7 @@ export default {
       .then((res) => {
         const result = res.data;
         this.items = result;
+        this.src = result[0].image
       });
   }
 };

@@ -15,6 +15,7 @@
 
 <script>
 import axios from "axios";
+import path from '../utils/path'
 
 export default {
   data(){
@@ -34,10 +35,9 @@ export default {
       formData.append("image", this.selectedFile);  
       
       axios
-        .post(`http://localhost:3000/upload/user/${token}`,formData)
+        .post(`${path}upload/user/${token}`,formData)
         .then(res => {
           this.src = res.data;
-          // console.log('berhasil di upload')
         })
         .catch(err => {
           console.log(err);

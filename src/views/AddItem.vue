@@ -241,7 +241,7 @@ export default {
                   })
                   .finally(() => this.isLoad = false)
                   .then(() => {
-                    this.$router.push("/items");
+                    this.$router.push("/barang");
                   });
             })
             .catch((err) => {

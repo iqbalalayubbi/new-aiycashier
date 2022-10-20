@@ -22,7 +22,7 @@
               <div class="avatar">
                 <div class="mask mask-squircle w-12 h-12">
                   <img
-                    :src="[item.image == undefined ? src : item.image ]"
+                    :src="item.image"
                     alt="Avatar Tailwind CSS Component"
                   />
                 </div>
@@ -74,7 +74,7 @@ export default {
     },
     deleteItem(id) {
       this.$emit('deleteItem',id)
-    },
+    }
   },
 };
 </script>
