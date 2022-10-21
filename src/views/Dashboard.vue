@@ -132,7 +132,6 @@ export default {
                 result.forEach(trans => trans.items.forEach((item) => count ++))
                 this.cards[1].val = count
                 const data = result
-                console.log(data)
         })
     }
 }

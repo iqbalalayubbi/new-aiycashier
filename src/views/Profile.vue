@@ -56,17 +56,29 @@
 
       <div class="flex w-[90%] lg:w-3/4 justify-center gap-5 lg:mt-0 mt-10">
         <div class="w-1/2 lg:w-1/3 flex flex-col gap-3 mt-10">
-          <Input nama="nama" ref="nama" :val="user.nama" />
-          <Input nama="username" ref="username" :val="user.username" />
+          <Input nama="nama" ref="nama" :val="user.nama" @onInput="onInput" />
+          <Input
+            nama="username"
+            ref="username"
+            :val="user.username"
+            inputClass="bg-slate-300 border-none"
+          />
         </div>
         <div class="w-1/2 lg:w-1/3 flex flex-col gap-3 mt-10">
           <Input nama="no hp" ref="no_hp" :val="user.no_hp" />
-          <Input nama="role" ref="role" :val="user.role" inputClass="bg-slate-300 border-none"/>
+          <Input
+            nama="role"
+            ref="role"
+            :val="user.role"
+            inputClass="bg-slate-300 border-none"
+            @onInput="onInput"
+          />
         </div>
       </div>
       <button
         class="btn mt-5 w-[80%] lg:w-1/3 bg-color1 border-color1 hover:bg-color2 hover:border-color2"
         @click="clickBtn('simpan')"
+        ref="simpan"
       >
         Simpan
       </button>
@@ -91,64 +103,116 @@ import Navbar from "@/components/Navbar.vue";
 import Input from "@/components/Input.vue";
 import axios from "axios";
 import path from "../utils/path.js";
-import img from '../assets/default.svg'
+import img from "../assets/default.svg";
 
 export default {
   data() {
     return {
       user: [],
       selectedFile: "",
-      isLoad:false,
-      src:img
+      isLoad: false,
+      src: img,
+      userValid: false,
+      imgValid: false,
     };
   },
   components: { Navbar, Input },
   methods: {
-    onFileChange(e) {
-      const image = this.$refs.image
-      const selectedFile = e.target.files[0]; // accessing file
-      const url = URL.createObjectURL(selectedFile)
-      image.setAttribute('src',url)
-      this.selectedFile = selectedFile;
+    onInput() {
+      const ref = this.$refs;
+      const nama = ref.nama.$refs.input.value;
+      const no_hp = ref.no_hp.$refs.input.value;
+      if (nama.length !== 0 && no_hp.length !== 0) this.userValid = true;
+      if (this.userValid) this.$refs.simpan.disabled = false;
     },
-    clickBtn(act) {
+    onFileChange(e) {
+      const image = this.$refs.image;
+      const selectedFile = e.target.files[0]; // accessing file
+      const url = URL.createObjectURL(selectedFile);
+      image.setAttribute("src", url);
+      this.selectedFile = selectedFile;
+      this.$refs.simpan.disabled = false;
+      if (this.selectedFile !== "") this.imgValid = true;
+    },
+    uploadImg() {
+      const token = JSON.parse(localStorage.getItem("token"));
+      this.isLoad = true;
+      const formData = new FormData();
+      formData.append("image", this.selectedFile);
+      axios
+        .post(`${path}upload/user/${token}`, formData)
+        .finally(() => (this.isLoad = false))
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    uploadUser() {
       const ref = this.$refs
       const token = JSON.parse(localStorage.getItem("token"));
-      const formData = new FormData();
+      const nama = ref.nama.$refs.input.value;
+      const no_hp = ref.no_hp.$refs.input.value;
+      const user = { nama, no_hp };
 
-      const username = ref.username.$refs.input.value
-      const nama = ref.nama.$refs.input.value
-      const role = ref.role.$refs.input.value
-      const no_hp = ref.no_hp.$refs.input.value
-
-      const user = {username,nama,role,no_hp}
-
-      if (act == "simpan") {
-        this.isLoad = true
-        formData.append("image", this.selectedFile);
-        axios
-          .post(`${path}upload/user/${token}`, formData)
-          .then((res) => {
-            axios.put(`${path}user/${token}`,user)
-            .then(() => {
-              this.$swal
-              .fire({
-                position: "center",
-                icon: "success",
-                title: "profile berhasil di ubah",
-                showConfirmButton: false,
-                timer: 500,
-              })
-              .then(() => {
-                this.isLoad = false;
-                this.$router.push('/dashboard')
-              });
-            })
+      this.isLoad = true;
+      axios.put(`${path}user/${token}`, user).then(() => {
+        this.$swal
+          .fire({
+            position: "center",
+            icon: "success",
+            title: "profile berhasil di ubah",
+            showConfirmButton: false,
+            timer: 500,
           })
-          .catch((err) => {
-            console.log(err);
+          .finally(() => (this.isLoad = false))
+          .then(() => {
+            this.isLoad = false;
+            this.$router.push("/dashboard");
+          });
+      });
+    },
+    uploadAll() {
+      const token = JSON.parse(localStorage.getItem("token"));
+      this.isLoad = true;
+      const formData = new FormData();
+      formData.append("image", this.selectedFile);
+      axios
+        .post(`${path}upload/user/${token}`, formData)
+        .then(() => this.uploadUser())
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    clickBtn(act) {
+      if (this.userValid || this.imgValid) {
+        this.$swal
+          .fire({
+            title: "Simpan perubahan?",
+            icon: "info",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            cancelButtonText: "Batal",
+            confirmButtonText: "Simpan",
+          })
+          .then((result) => {
+            if (result.isConfirmed) {
+              if (this.imgValid && this.userValid) this.uploadAll()
+              if (this.imgValid) this.uploadImg();
+              else if (this.userValid) this.uploadUser();
+            }
           });
       }
+
+      // if (act == "simpan") {
+      //   this.isLoad = true;
+      //   formData.append("image", this.selectedFile);
+      //   axios
+      //     .post(`${path}upload/user/${token}`, formData)
+      //     .then((res) => {})
+      //     .catch((err) => {
+      //       console.log(err);
+      //     });
+      // }
     },
   },
   created() {
@@ -156,12 +220,14 @@ export default {
     axios.get(`${path}user/${token}`).then((res) => {
       const result = res.data[0];
       this.user = result;
-      if (result.image !== undefined) this.src = result.image
+      if (result.image !== undefined) this.src = result.image;
     });
   },
-  mounted(){
-    this.$refs.role.$refs.input.disabled = true
-  }
+  mounted() {
+    this.$refs.role.$refs.input.disabled = true;
+    this.$refs.username.$refs.input.disabled = true;
+    this.$refs.simpan.disabled = true;
+  },
 };
 </script>
 
