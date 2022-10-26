@@ -1,10 +1,10 @@
 <template>
-  <div class="overflow-x-auto overflow-y-auto h-80">
+  <div class="overflow-x-auto overflow-y-auto h-80 xl:h-72">
   <table class="table w-full table-zebra">
     <!-- head -->
     <thead class="sticky top-0">
       <tr>
-        <th>Tanggal</th>
+        <th class="relative">Tanggal</th>
         <th>Nama</th>
         <th>Kategori</th>
         <th>Satuan</th>

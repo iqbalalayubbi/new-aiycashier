@@ -7,7 +7,7 @@
                 <CardDash v-for="(card,i) in cards" :icon="card.icon" :key="i" :nama="card.nama" :val="card.val" class="hidden lg:flex"/>
                 <SliderCard class="w-60 lg:hidden flex" :untung="cards[0].val" :terjual="cards[1].val" :items="cards[2].val"/>
             </div>
-            <div class="flex lg:flex-row flex-col items-center lg:justify-center mt-20 gap-5">
+            <div class="flex lg:flex-row flex-col items-center lg:justify-center xl:mt-12 mt-20 gap-5">
                 <Input placeholder="nama barang . . ."  class="w-80" @onInput="onInput"/>
                 <Input type="date" class="w-40" ref="date" @change="onDate"/>
                 <button class="btn" @click="resetDate">reset</button>

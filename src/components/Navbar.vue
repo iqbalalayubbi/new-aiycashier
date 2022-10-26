@@ -1,6 +1,6 @@
 <template>
   <nav
-    class="lg:w-16 bg-color1 h-screen hidden lg:flex flex-col gap-5 hover:lg:w-40 transition-all duration-300"
+    class="lg:w-16 xl:gap-0 xl:justify-around bg-color1 h-screen hidden lg:flex flex-col gap-5 hover:lg:w-40 transition-all duration-300"
     @mouseenter="isOpen = true"
     @mouseleave="isOpen = false"
   >

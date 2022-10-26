@@ -11,7 +11,7 @@
         </div>
         <div class="card-body flex flex-col items-center">
             <h2 class="card-title">Pembayaran Mudah</h2>
-            <p class="text-center">AIYCASHIER siap membantu anda dalam <br> mengatur laporan usaha/dagang, secara struktur dan efisien.</p>
+            <p class="text-center">AiyCashier siap membantu anda dalam <br> mengatur laporan usaha/dagang, secara struktur dan efisien.</p>
         </div>
     </div>
 </div>
