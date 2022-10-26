@@ -42,7 +42,7 @@
         class="absolute w-[90%] lg:w-3/4 z-[99] top-40 lg:top-32"
       />
       <button
-        class="btn mt-10 w-1/2 bg-color1 border-color1 hover:bg-color2 hover:border-color2"
+        class="btn xl:mt-2 lg:mt-20 mt-10 w-1/2 bg-color1 border-color1 hover:bg-color2 hover:border-color2"
         @click="this.$router.push('barang/tambah')"
       >
         Tambah Barang

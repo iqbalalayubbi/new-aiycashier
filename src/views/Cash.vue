@@ -39,7 +39,7 @@
         />
 
         <button
-          class="btn mt-10 w-3/4 lg:w-1/2 bg-color1 border-color1 hover:bg-color2 hover:border-color2"
+          class="btn xl:mt-3 mt-10 w-3/4 lg:w-1/2 bg-color1 border-color1 hover:bg-color2 hover:border-color2"
           @click="clickPay"
         >
           Bayar
@@ -180,6 +180,7 @@ export default {
       this.$refs.input.value = "";
       this.$refs.input.focus();
       this.chooseItem = false;
+      this.items = this.dataItems
     },
     calItem(total) {
       this.total = total;
@@ -256,7 +257,7 @@ export default {
           .fire({
             position: "center",
             icon: "success",
-            title: "Pembayran Berhasil",
+            title: "Pembayaran Berhasil",
             showConfirmButton: false,
             timer: 1500,
           })
