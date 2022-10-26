@@ -4,7 +4,7 @@
     <NavMobile />
     <div class="lg:w-full w-screen flex flex-col items-center">
       <!-- content -->
-      <h1 class="text-4xl font-bold mt-10">Data Toko</h1>
+      <h1 class="text-4xl font-bold xl:mt-3 lg:mt-10 mt-10">Data Toko</h1>
 
       <div class="indicator">
         <span
@@ -39,7 +39,7 @@
         <Input nama="pemilik" ref="admin" :val="shop.admin" />
         <Input nama="alamat" ref="alamat" :val="shop.alamat" />
         <button
-          class="btn mt-5 w-full bg-color1 border-color1 hover:bg-color2 hover:border-color2"
+          class="btn mt-5 xl:mt-3 w-full bg-color1 border-color1 hover:bg-color2 hover:border-color2"
           @click="updateShop"
         >
           Simpan
