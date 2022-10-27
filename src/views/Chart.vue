@@ -82,7 +82,7 @@ export default {
     },
     created(){
         const token = JSON.parse(localStorage.getItem('token'))
-        axios.get(`https://aiycashier.herokuapp.com/${token}`).then(res => {
+        axios.get(`${path}${token}`).then(res => {
             const data = res.data.data
             const role = data.role
             if (role == 'kasir') {

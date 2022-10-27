@@ -140,6 +140,8 @@ export default {
       itemTrans: [],
       isLoad: false,
       inputVal: "",
+      username:'',
+      role:''
     };
   },
   methods: {
@@ -263,10 +265,14 @@ export default {
         const total = child[6].innerHTML;
         const tanggal  = time
         const timeNow = getTime
+        const username = this.username
+        const role = this.role
         const itemTable = {
           id,
           tanggal,
           timeNow,
+          username,
+          role,
           nama,
           kategori,
           satuan,
@@ -326,6 +332,8 @@ export default {
       .finally(() => (this.isLoad = false))
       .then((res) => {
         const items = res.data.data;
+        this.username = res.data.username
+        this.role = res.data.role
         this.items = items;
         this.dataItems = items;
       });
