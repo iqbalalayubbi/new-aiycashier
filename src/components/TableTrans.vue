@@ -18,12 +18,12 @@
       <!-- <template v-for="n in totalTrans"> -->
           <tr v-for="(item, i) in items" :key="i">
             <td>{{ item.tanggal }}</td>
-            <td>{{ item.item.nama }}</td>
-            <td>{{ item.item.kategori }}</td>
-            <td>{{ item.item.satuan }}</td>
-            <td>{{ item.item.harga }}</td>
-            <td>{{ item.item.jumlah }}</td>
-            <td>{{ item.item.total }}</td>
+            <td>{{ item.nama }}</td>
+            <td>{{ item.kategori }}</td>
+            <td>{{ item.satuan }}</td>
+            <td>{{ item.harga }}</td>
+            <td>{{ item.jumlah }}</td>
+            <td>{{ item.total }}</td>
           </tr>
       <!-- </template> -->
     </tbody>

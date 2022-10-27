@@ -119,6 +119,10 @@ import bca from "../assets/bank/bca.svg";
 import bni from "../assets/bank/bni.svg";
 import gopay from "../assets/bank/gopay.svg";
 
+//library 
+import moment from 'moment'
+
+
 export default {
   data() {
     return {
@@ -242,6 +246,7 @@ export default {
 
     },
     paySuccess() {
+      const time = moment().format('D/M/YYYY HH:mm:ss')
       const items = this.$refs.table.$refs.item;
       this.isLoad = true;
       items.forEach((item) => {
@@ -254,8 +259,10 @@ export default {
         const harga = child[4].innerHTML;
         const jumlah = child[5].children[0].value;
         const total = child[6].innerHTML;
+        const tanggal  = time
         const itemTable = {
           id,
+          tanggal,
           nama,
           kategori,
           satuan,

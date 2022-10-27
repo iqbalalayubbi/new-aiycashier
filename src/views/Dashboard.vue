@@ -152,20 +152,16 @@ export default {
       .then((res) => {
         const result = res.data.data;
         let count = 0;
-
         const dates = []
         const data = [];
         result.forEach((trans) =>
           trans.items.forEach((item) => {
 
-            count++
+            count += parseInt(item.jumlah)
 
-            data.push({
-              item: item,
-              tanggal: trans.tanggal,
-            });
+            data.push(item);
 
-            const date = trans.tanggal.split(' ')[0]
+            const date = item.tanggal.split(' ')[0]
             if (!dates.includes(date))dates.push(date)
             
           })
