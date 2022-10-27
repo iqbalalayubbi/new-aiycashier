@@ -26,7 +26,7 @@ export default {
         return{
             tanggal:[],
             untung:[],
-            chartType:'bar',
+            chartType:'line',
             nama:[],
             totalItem:[],
             btnName:'lihat barang terlaris'
@@ -37,17 +37,17 @@ export default {
         changeChart(){
             console.log('click')
             Chart.getChart('myChart').destroy();
-            if (this.chartType == 'bar'){
+            if (this.chartType == 'line'){
                 this.btnName = 'lihat keuntungan'
-                this.chartType = 'line'
-                const ctx = document.getElementById('myChart').getContext('2d');
-                const myChart = new Chart(ctx,tempChart('line','barang terlaris',this.nama,this.totalItem))
-                myChart
-            }else if(this.chartType == 'line'){
-                this.btnName = 'lihat barang terlaris'
                 this.chartType = 'bar'
                 const ctx = document.getElementById('myChart').getContext('2d');
-                const myChart = new Chart(ctx,tempChart('bar','keuntungan',this.tanggal,this.untung))
+                const myChart = new Chart(ctx,tempChart('bar','barang terlaris',this.nama,this.totalItem))
+                myChart
+            }else if(this.chartType == 'bar'){
+                this.btnName = 'lihat barang terlaris'
+                this.chartType = 'line'
+                const ctx = document.getElementById('myChart').getContext('2d');
+                const myChart = new Chart(ctx,tempChart('line','keuntungan',this.tanggal,this.untung))
                 myChart
             }
         }
@@ -69,7 +69,6 @@ export default {
                     this.nama.push(d.nama)
                     this.totalItem.push(d.all)
                 })
-
 
                 const ctx = document.getElementById('myChart').getContext('2d');
                 const myChart = new Chart(ctx,tempChart(this.chartType,'keuntungan',this.tanggal,this.untung))

@@ -73,12 +73,9 @@ export default {
       const items = [];
       console.log(this.dataTrans)
       this.dataTrans.forEach((trans) => {
-            const nama = trans.item.nama.toLowerCase()
+            const nama = trans.nama.toLowerCase()
             if (nama.startsWith(val)){
-                items.push({
-                    item:trans.item,
-                    tanggal:trans.tanggal
-                })
+                items.push(trans)
             }
       });
       items.length == 0 ? this.notFound = true : this.notFound = false
