@@ -248,6 +248,8 @@ export default {
     paySuccess() {
       const time = moment().format('D/M/YYYY HH:mm:ss')
       const items = this.$refs.table.$refs.item;
+      const now = new Date
+      const getTime = now.getTime()
       this.isLoad = true;
       items.forEach((item) => {
         const modal = item.getAttribute("data-modal");
@@ -260,9 +262,11 @@ export default {
         const jumlah = child[5].children[0].value;
         const total = child[6].innerHTML;
         const tanggal  = time
+        const timeNow = getTime
         const itemTable = {
           id,
           tanggal,
+          timeNow,
           nama,
           kategori,
           satuan,

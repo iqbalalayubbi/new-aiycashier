@@ -148,9 +148,10 @@ export default {
       .finally(() => (this.isLoad = false))
       .then((res) => {
         const result = res.data.data;
-        let count = 0;
+        let count = 0
         const dates = []
-        const data = [];
+        const data = []
+        const timeNow = []
         result.forEach((trans) =>
           trans.items.forEach((item) => {
 
@@ -160,19 +161,19 @@ export default {
 
             const date = item.tanggal.split(' ')[0]
             if (!dates.includes(date))dates.push(date)
-            
+            if (!timeNow.includes(item.timeNow)) timeNow.push(item.timeNow)
           })
         );
         this.cards[1].val = count;
+        timeNow.sort((a,b) => b-a)
 
         const newData = []
-        dates.forEach(date => {
-            data.forEach(d => {
-                const tanggal = d.tanggal.split(' ')[0]
-                if (tanggal == date){
-                    newData.push(d)
-                }
-            })
+        timeNow.forEach(time => {
+          data.forEach(item => {
+            if (time == item.timeNow){
+              newData.push(item)
+            }
+          })
         })
 
         this.trans = newData;
