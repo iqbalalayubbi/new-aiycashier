@@ -86,8 +86,8 @@ export default {
     clickDel(username) {
       this.$swal
         .fire({
-          title: "Ingin berhentikan karyawan?",
-          text: "kamu akan menghapus karyawan ini",
+          title: "Berhentikan Karyawan?",
+          text: "Data Karyawan dan Akunnya akan terhapus",
           icon: "warning",
           showCancelButton: true,
           confirmButtonColor: "#3085d6",

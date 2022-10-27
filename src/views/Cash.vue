@@ -13,20 +13,20 @@
         </div>
 
         <div class="form-control mt-10 lg:w-1/2 w-3/4">
-          <div class="input-group w-full">
+          <div class="w-full bg-white flex items-center border-2 border-base-300 py-3 px-2 rounded-xl">
             <input
-              type="text"
-              placeholder="Cari Barang…   (Ctrl + i)"
-              class="input input-bordered w-full"
               ref="input"
+              type="text"
+              placeholder="Cari Barang…"
+              class="w-[90%] indent-3 focus:outline-none text-md"
               @input="onInput"
             />
-            <button
-              class="btn btn-square bg-color1 border-color1 hover:bg-color2 hover:border-color2"
-              @click="chooseItem = true"
-            >
-              <Icon icon="akar-icons:search" class="text-xl" />
-            </button>
+            <div class="flex gap-3 items-center mr-3 opacity-50">
+              <kbd class="kbd kbd-sm">Ctrl</kbd>
+              +
+              <kbd class="kbd kbd-sm">i</kbd>
+            </div>
+            <Icon icon="akar-icons:search" class="text-xl text-color1" />
           </div>
         </div>
 
@@ -37,12 +37,17 @@
           @calItem="calItem"
           @removeItem="removeItem"
         />
-
+        
         <button
-          class="btn xl:mt-3 mt-10 w-3/4 lg:w-1/2 bg-color1 border-color1 hover:bg-color2 hover:border-color2"
+          class="btn mt-20 w-3/4 lg:w-1/2 bg-color1 border-color1 hover:bg-color2 hover:border-color2 relative"
           @click="clickPay"
         >
           Bayar
+          <div class="absolute right-5 opacity-50">
+            <kbd class="kbd text-gray-500 kbd-sm">Alt</kbd>
+            +
+            <kbd class="kbd text-gray-500 kbd-sm">P</kbd>
+          </div>
         </button>
       </div>
 
@@ -134,14 +139,28 @@ export default {
     };
   },
   methods: {
+    formatMoney(money){
+      const arrMoney = money.toString().split('')
+      let dot = 0
+      for(let i = arrMoney.length-1 ; i >= 0 ; i-- ){
+          dot ++
+          if (dot % 3 == 0 ){
+              arrMoney.splice(i,0,'.')
+          }
+      }
+      if (arrMoney[0] == '.')arrMoney.splice(0,1)
+      return arrMoney.join('')
+    },
     closeItems() {
       this.chooseItem = false;
       this.$refs.input.focus();
     },
     onTyping(e) {
       const key = e.key;
-      if (e.ctrlKey && key == "i") this.$refs.input.focus();
-      if (key == "Enter") {
+      const input = this.$refs.input
+      if (e.altKey && key == "p")this.clickPay()
+      if (e.ctrlKey && key == "i") input.focus();
+      if (key == "Enter" && document.activeElement == input) {
         this.chooseItem = true;
       } else if (key == "Escape") {
         this.chooseItem = false;
@@ -309,7 +328,7 @@ export default {
       totalAll.forEach((el) => {
         finalTotal += parseInt(el.innerHTML);
       });
-      this.total = finalTotal;
+      this.total = this.formatMoney(finalTotal);
     }
   },
 };

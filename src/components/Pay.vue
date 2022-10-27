@@ -15,7 +15,7 @@
         <span class="text-center font-bold text-2xl">Rp{{ total }}</span>
         <div v-show="isCash" class="mt-5">
           <Input placeholder="nominal" @onInput="onInput" ref="nominal" />
-          <span :class="classStatus">{{ status }} :{{ cash }}</span>
+          <span class="font-bold" :class="classStatus">{{ status }} : {{ cash }}</span>
         </div>
         <button
           class="btn my-5 w-1/2 bg-color1 border-color1 hover:bg-color2 hover:border-color2"
@@ -56,22 +56,42 @@ export default {
     Input,
   },
   methods: {
+    formatMoney(money){
+      const arrMoney = money.toString().split('')
+      let dot = 0
+      for(let i = arrMoney.length-1 ; i >= 0 ; i-- ){
+          dot ++
+          if (dot % 3 == 0 ){
+              arrMoney.splice(i,0,'.')
+          }
+      }
+      if (arrMoney[0] == '.')arrMoney.splice(0,1)
+      return arrMoney.join('')
+    },
     cancelPay() {
       this.$emit("cancelPay");
     },
-    isInput() {
-      console.log("typing");
-    },
     onInput(val) {
+      console.log(parseInt(this.total.split('.').join('')))
       const nominal = parseInt(val);
-      const result = nominal - this.total;
-      this.cash = result;
+      const result = nominal - parseInt(this.total.split('.').join(''));
+      this.cash = this.formatMoney(result);
       if (result < 0) {
         this.classStatus = "text-red-500";
         this.status = "kurang";
-      } else {
+      } else if(result >= 0) {
         this.classStatus = "text-green-500";
         this.status = "kembalian";
+      }
+      if(isNaN(result)){
+          this.classStatus = "text-red-500";
+          this.status = "nominal tidak valid";
+          this.cash = ''
+      }
+      if (val == ''){
+          this.classStatus = "text-yellow-500";
+          this.status = "masukkan nominal";
+          this.cash = ''
       }
     },
     clickPay() {

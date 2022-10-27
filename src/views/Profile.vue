@@ -141,7 +141,10 @@ export default {
       formData.append("image", this.selectedFile);
       axios
         .post(`${path}upload/user/${token}`, formData)
-        .finally(() => (this.isLoad = false))
+        .finally(() => {
+          this.isLoad = false
+          this.$router.push("/dashboard");
+        })
         .catch((err) => {
           console.log(err);
         });

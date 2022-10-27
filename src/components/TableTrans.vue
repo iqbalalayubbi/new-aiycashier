@@ -1,5 +1,5 @@
 <template>
-  <div class="overflow-x-auto overflow-y-auto h-80 xl:h-72">
+  <div class="overflow-x-auto overflow-y-auto h-80">
   <table class="table w-full table-zebra">
     <!-- head -->
     <thead class="sticky top-0">
@@ -16,17 +16,15 @@
     <tbody>
       <!-- row 1 -->
       <!-- <template v-for="n in totalTrans"> -->
-        <template v-for="(trans,i) in transaksi" :key="i">
-          <tr v-for="(item,x) in trans.items" :key="x">
-            <td>{{trans.tanggal}}</td>
-            <td>{{item.nama}}</td>
-            <td>{{item.kategori}}</td>
-            <td>{{item.satuan}}</td>
-            <td>{{item.harga}}</td>
-            <td>{{item.jumlah}}</td>
-            <td>{{item.total}}</td>
+          <tr v-for="(item, i) in items" :key="i">
+            <td>{{ item.tanggal }}</td>
+            <td>{{ item.item.nama }}</td>
+            <td>{{ item.item.kategori }}</td>
+            <td>{{ item.item.satuan }}</td>
+            <td>{{ item.item.harga }}</td>
+            <td>{{ item.item.jumlah }}</td>
+            <td>{{ item.item.total }}</td>
           </tr>
-        </template>
       <!-- </template> -->
     </tbody>
   </table>
@@ -36,8 +34,7 @@
 <script>
 export default {
   props:{
-    transaksi:Object,
-    totalTrans:Number
+    items:String
   }
 }
 </script>

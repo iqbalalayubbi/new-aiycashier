@@ -47,7 +47,7 @@
             <div
               class="w-full rounded-full ring ring-base-300 ring-offset-base-100 ring-offset-2"
             >
-              <img :src="src" alt="item" ref="image"/>
+              <img :src="src" alt="item" ref="image" />
             </div>
           </div>
         </div>
@@ -135,7 +135,7 @@ import Input from "@/components/Input.vue";
 import LoadDetailItem from "@/components/LoadDetailItem.vue";
 import axios from "axios";
 import path from "../utils/path.js";
-import img from '../assets/defaut-item.svg'
+import img from "../assets/defaut-item.svg";
 
 export default {
   data() {
@@ -144,7 +144,7 @@ export default {
       isLoad: false,
       item: {},
       selectedFile: "",
-      src:img
+      src: img,
     };
   },
   methods: {
@@ -152,27 +152,24 @@ export default {
       const token = JSON.parse(localStorage.getItem("token"));
       const formData = new FormData();
       formData.append("image", this.selectedFile);
-      const id = this.$route.params.id
+      const id = this.$route.params.id;
       axios
-        .post(
-          `${path}upload/item/${token}?id=${id}`,
-          formData
-        )
+        .post(`${path}upload/item/${token}?id=${id}`, formData)
         .finally(() => {
-            axios.put(`${path}items/${id}/${token}`, this.item).then(() => {
-                this.$swal
-                  .fire({
-                    position: "center",
-                    icon: "success",
-                    title: "item berhasil di ubah",
-                    showConfirmButton: false,
-                    timer: 500,
-                  })
-                  .then(() => {
-                    this.isLoad = false;
-                    this.$router.push("/barang");
-                  });
-            })
+          axios.put(`${path}items/${id}/${token}`, this.item).then(() => {
+            this.$swal
+              .fire({
+                position: "center",
+                icon: "success",
+                title: "item berhasil di ubah",
+                showConfirmButton: false,
+                timer: 500,
+              })
+              .then(() => {
+                this.isLoad = false;
+                this.$router.push("/barang");
+              });
+          });
         })
         .then((res) => {
           console.log(res.data);
@@ -183,15 +180,23 @@ export default {
     },
 
     onFileChange(e) {
-      const image = this.$refs.image
+      const image = this.$refs.image;
       const selectedFile = e.target.files[0]; // accessing file
-      const url = URL.createObjectURL(selectedFile)
-      image.setAttribute('src',url)
+      const url = URL.createObjectURL(selectedFile);
+      image.setAttribute("src", url);
       this.selectedFile = selectedFile;
     },
     saveItem() {
-      this.isLoad = true;
-      this.onUploadFile();
+      this.$swal.fire({
+        title: "Simpan Perubahan Pada Barang?",
+        showCancelButton: true,
+        confirmButtonText: "Simpan",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.isLoad = true;
+          this.onUploadFile();
+        }
+      });
     },
     onInput(val, input, $event) {
       if (input == "nama") this.item.nama = val;
@@ -215,8 +220,8 @@ export default {
       .then((res) => {
         const result = res.data;
         this.items = result;
-        this.src = result[0].image
+        this.src = result[0].image;
       });
-  }
+  },
 };
 </script>

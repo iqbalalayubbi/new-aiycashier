@@ -60,13 +60,7 @@
           />
         </div>
       </div>
-      <button
-        class="btn mt-10 w-3/4 lg:w-1/3 bg-color1 border-color1 hover:bg-color2 hover:border-color2"
-        @click="clickBtn('simpan')"
-      >
-        Simpan
-      </button>
-      <button class="btn w-3/4 lg:w-1/3 mt-5" @click="clickBtn('kembali')">
+      <button class="btn w-3/4 lg:w-1/3 mt-20" @click="this.$router.push('/karyawan')">
         Kembali
       </button>
     </div>
@@ -98,43 +92,6 @@ export default {
     };
   },
   components: { Navbar, Input },
-  methods: {
-    clickBtn(menu) {
-      if (menu == "simpan") {
-        const ref = this.$refs;
-        const username = ref.username.$refs.input.value;
-        const password = ref.password.$refs.input.value;
-        const role = this.$refs.role.value;
-
-        this.isLoad = true;
-        const token = JSON.parse(localStorage.getItem("token"));
-        axios
-          .post(`${path}employe/${token}`, {
-            username,
-            password,
-            role,
-          })
-          .finally(() => (this.isLoad = false))
-          .then((res) => {
-            const result = res.data;
-            if (result.isSuccess) {
-              this.$swal
-                .fire({
-                  position: "center",
-                  icon: "success",
-                  title: result.status,
-                  text: result.msg,
-                  showConfirmButton: false,
-                  timer: 2000,
-                })
-                .then(() => this.$router.push("/karyawan"));
-            }
-          });
-      } else if (menu == "kembali") {
-        this.$router.push("/karyawan");
-      }
-    },
-  },
   mounted() {
     const ref = this.$refs;
     const nama = ref.nama.$refs.input;

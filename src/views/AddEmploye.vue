@@ -31,8 +31,13 @@
         </div>
       </div>
       <div class="w-[90%] lg:w-1/3 flex flex-col gap-3 mt-10">
-        <Input nama="username" type="text" ref="username" />
-        <Input nama="password" type="password" ref="password" />
+        <Input nama="username" type="text" ref="username" @onInput="onInput" />
+        <Input
+          nama="password"
+          type="password"
+          ref="password"
+          @onInput="onInput"
+        />
         <select
           class="select border-color1 mt-3 focus:outline-color1"
           ref="role"
@@ -43,9 +48,10 @@
         </select>
         <button
           class="btn mt-5 w-full bg-color1 border-color1 hover:bg-color2 hover:border-color2"
+          ref="btnSave"
           @click="clickBtn('simpan')"
         >
-          Simpan
+          Tambah
         </button>
         <button class="btn w-full" @click="clickBtn('kembali')">Kembali</button>
       </div>
@@ -77,51 +83,73 @@ export default {
   },
   components: { Navbar, Input },
   methods: {
+    onInput() {
+      const ref = this.$refs;
+      const username = ref.username.$refs.input.value;
+      const password = ref.password.$refs.input.value;
+      if (username.length >= 3 && password.length >= 3) {
+        this.$refs.btnSave.disabled = false;
+      } else {
+        this.$refs.btnSave.disabled = true;
+      }
+    },
     clickBtn(menu) {
       if (menu == "simpan") {
         const ref = this.$refs;
         const username = ref.username.$refs.input.value;
         const password = ref.password.$refs.input.value;
         const role = this.$refs.role.value;
-
-        this.isLoad = true;
         const token = JSON.parse(localStorage.getItem("token"));
-        axios
-          .post(`${path}employe/${token}`, {
-            username,
-            password,
-            role,
-          })
-          .finally(() => (this.isLoad = false))
-          .then((res) => {
-            const result = res.data;
-            console.log(result)
-            if (result.isSuccess) {
-              this.$swal
-                .fire({
-                  position: "center",
-                  icon: "success",
-                  title: result.status,
-                  text: result.msg,
-                  showConfirmButton: false,
-                  timer: 2000,
-                })
-                .then(() => this.$router.push("/karyawan"));
-            }else {
-                this.$swal.fire({
+        this.$swal.fire({
+          title: "Yakin Ingin Menambahkan Karyawan Ini?",
+          showCancelButton: true,
+          confirmButtonText: "Tambah",
+        }).then((result) => {
+          /* Read more about isConfirmed, isDenied below */
+          if (result.isConfirmed) {
+            this.isLoad = true;
+          axios
+            .post(`${path}employe/${token}`, {
+              username,
+              password,
+              role,
+            })
+            .finally(() => (this.isLoad = false))
+            .then((res) => {
+              const result = res.data;
+              console.log(result);
+              if (result.isSuccess) {
+                this.$swal
+                  .fire({
                     position: "center",
-                    icon: "error",
+                    icon: "success",
                     title: result.status,
                     text: result.msg,
                     showConfirmButton: false,
-                    timer: 1500,
+                    timer: 2000,
+                  })
+                  .then(() => this.$router.push("/karyawan"));
+              } else {
+                this.$swal.fire({
+                  position: "center",
+                  icon: "error",
+                  title: result.status,
+                  text: result.msg,
+                  showConfirmButton: false,
+                  timer: 1500,
                 });
-            }
-          });
+              }
+            });
+          }
+        });
+
       } else if (menu == "kembali") {
         this.$router.push("/karyawan");
       }
     },
+  },
+  mounted() {
+    this.$refs.btnSave.disabled = true;
   },
 };
 </script>

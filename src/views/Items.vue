@@ -5,19 +5,20 @@
     <div class="lg:w-full w-screen flex flex-col items-center">
       <!-- content -->
       <div class="form-control mt-20 lg:mt-10 w-3/4 lg:w-1/2 relative">
-        <div class="input-group w-full">
+        <div class="w-full bg-white flex items-center border-2 border-base-300 py-3 px-2 rounded-xl">
           <input
             ref="input"
             type="text"
-            placeholder="Cari Barang…  (Ctrl + i)"
-            class="input input-bordered w-full"
+            placeholder="Cari Barang…"
+            class="w-[95%] indent-3 focus:outline-none text-md"
             @input="onInput"
           />
-          <button
-            class="btn btn-square bg-color1 border-color1 hover:bg-color2 hover:border-color2"
-          >
-            <Icon icon="akar-icons:search" class="text-xl" />
-          </button>
+          <div class="flex gap-3 items-center mr-3 opacity-50">
+              <kbd class="kbd kbd-sm">Ctrl</kbd>
+              +
+              <kbd class="kbd kbd-sm">i</kbd>
+          </div>
+          <Icon icon="akar-icons:search" class="text-xl text-color1" />
         </div>
         <ul
           class="menu bg-base-100 p-2 rounded-box border-2 border-base-300 w-full absolute top-12 z-[99]"
@@ -75,9 +76,11 @@ export default {
       const token = JSON.parse(localStorage.getItem("token"));
       this.$swal
         .fire({
-          title: "Ingin menghapus barang?",
+          title: 'Yakin Ingin Menghapus Barang?',
+          icon: 'warning',
           showCancelButton: true,
-          confirmButtonText: "Hapus",
+          confirmButtonText: 'Hapus',
+          confirmButtonColor:'#d33',
         })
         .then((result) => {
           if (result.isConfirmed) {

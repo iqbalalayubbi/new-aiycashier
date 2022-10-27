@@ -1,26 +1,28 @@
 <template>
   <nav
-    class="lg:w-16 xl:gap-0 xl:justify-around bg-color1 h-screen hidden lg:flex flex-col gap-5 hover:lg:w-40 transition-all duration-300"
+    class="lg:w-16 bg-color1 h-screen hidden lg:flex flex-col hover:lg:w-40 transition-all duration-300"
     @mouseenter="isOpen = true"
     @mouseleave="isOpen = false"
   >
-    <ProfileMenu class="mt-8 self-center" :isOpen="isOpen" v-show="finish" />
-    <div
-      v-for="(m, i) in menu"
-      :key="i"
-      class="flex text-white items-center ml-2 gap-3 hover:bg-white py-3 pl-2 hover:text-color1 hover:rounded-l-md hover:cursor-pointer"
-      @click="clickMenu(m.nama)"
-      v-show="finish"
-      :class="[m.nama.toLowerCase() == isActive ? 'bg-white text-color1' : '']"
-    >
-      <Icon :icon="m.icon" class="text-2xl" />
-      <span v-show="isOpen">{{ m.nama }}</span>
+    <ProfileMenu class="mt-7 self-center" :isOpen="isOpen" v-show="finish" />
+    <div class="flex gap-3 flex-col mt-5">
+      <div
+        v-for="(m, i) in menu"
+        :key="i"
+        class="flex text-white items-center ml-2 gap-3 hover:bg-white py-3 pl-2 hover:text-color1 hover:rounded-l-md hover:cursor-pointer"
+        @click="clickMenu(m.nama)"
+        v-show="finish"
+        :class="[m.nama.toLowerCase() == isActive ? 'bg-white text-color1' : '']"
+      >
+        <Icon :icon="m.icon" class="text-2xl" />
+        <span v-show="isOpen">{{ m.nama }}</span>
+      </div>
     </div>
 
       <!-- :class="[m.nama.toLowerCase() == this.$router.pa]" -->
     <!-- logout button -->
     <div
-      class="flex text-white bg-red-600 items-center ml-2 gap-3 hover:bg-red-700 py-3 pl-2 hover:text-white hover:rounded-l-md hover:cursor-pointer"
+      class="flex mt-5 text-white bg-red-600 items-center ml-2 gap-3 hover:bg-red-700 py-3 pl-2 hover:text-white hover:rounded-l-md hover:cursor-pointer"
       @click="clickMenu('keluar')"
       v-show="finish"
     >
@@ -127,7 +129,6 @@ export default {
       .then((res) => {
         const data = res.data.data;
         const role = data.role;
-        console.log(role);
         if (role == "admin") {
           this.menu = this.dataMenu
         }
@@ -137,7 +138,6 @@ export default {
             this.menu[1] = this.dataMenu[1];
           }
           if (role == "pengelola") {
-            console.log("benar");
             this.menu[0] = this.dataMenu[0];
             this.menu[1] = this.dataMenu[1];
             this.menu[2] = this.dataMenu[3];
