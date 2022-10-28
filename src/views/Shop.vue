@@ -99,29 +99,37 @@ export default {
         admin: ref.admin.$refs.input.value,
         alamat: ref.alamat.$refs.input.value,
       };
-      this.isLoad = true
-      axios
-        .post(`${path}upload/shop/${token}`, formData)
-        .then((res) => {
-          axios.put(`${path}shop/${token}`, shop)
-            .finally(() => this.isLoad = false)
-            .then((res) => {
-            this.$swal
-              .fire({
-                position: "center",
-                icon: "success",
-                title: "Toko berhasil di ubah",
-                showConfirmButton: false,
-                timer: 1500,
+
+      this.$swal.fire({
+        title: "Simpan Data Toko?",
+        showCancelButton: true,
+        confirmButtonText: "Simpan",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.isLoad = true
+          axios
+              .post(`${path}upload/shop/${token}`, formData)
+              .then(() => {
+                axios.put(`${path}shop/${token}`, shop)
+                  .finally(() => this.isLoad = false)
+                  .then(() => {
+                  this.$swal
+                    .fire({
+                      position: "center",
+                      icon: "success",
+                      title: "Toko berhasil di ubah",
+                      showConfirmButton: false,
+                      timer: 1500,
+                    })
+                    .then(() => this.$router.push("/dashboard"));
+                });
               })
-              .then((res) => this.$router.push("/dashboard"));
-          });
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-
-
+              .catch((err) => {
+                console.log(err);
+              });
+          
+        }
+      });
 
     },
   },

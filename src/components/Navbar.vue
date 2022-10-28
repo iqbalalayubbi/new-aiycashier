@@ -136,12 +136,14 @@ export default {
           if (role == "kasir") {
             this.menu[0] = this.dataMenu[0];
             this.menu[1] = this.dataMenu[1];
+            this.menu[2] = this.dataMenu[6];
           }
           if (role == "pengelola") {
             this.menu[0] = this.dataMenu[0];
             this.menu[1] = this.dataMenu[1];
             this.menu[2] = this.dataMenu[3];
             this.menu[3] = this.dataMenu[4];
+            this.menu[4] = this.dataMenu[6];
           }
         }
       });

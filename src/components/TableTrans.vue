@@ -38,18 +38,11 @@ export default {
   props:{
     items:String
   },
-  mounted(){
-    // const rowRole = this.$refs.role
-    // rowRole.forEach(el => {
-    //   console.log(el)
-    // })
-  },
   methods:{
     role(role){
       if (role == 'admin') return 'badge-primary'
       if (role == 'pengelola') return 'badge-secondary'
       if (role == 'kasir') return 'badge-accent'
-      
     }
   }
 }

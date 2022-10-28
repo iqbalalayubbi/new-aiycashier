@@ -99,7 +99,7 @@
         class="btn mt-5 w-[90%] lg:w-1/3 bg-color1 border-color1 hover:bg-color2 hover:border-color2"
         @click="clickBtn('simpan')"
       >
-        Simpan
+        Tambah
       </button>
       <button
         class="btn w-[90%] lg:w-1/3 mt-5"
@@ -199,7 +199,21 @@ export default {
       }
     },
     clickBtn(btn) {
-      if (btn == "simpan") this.addItem();
+      if (btn == "simpan") {
+
+        this.$swal
+          .fire({
+            title: "Ingin Menambahkan Barang?",
+            showCancelButton: true,
+            confirmButtonText: "Tambah",
+          })
+          .then((result) => {
+            if (result.isConfirmed) {
+              this.addItem();
+            }
+          });
+
+      }
     },
     addItem() {
       const ref = this.$refs;
@@ -226,28 +240,27 @@ export default {
           stok,
         })
         .then((res) => {
-            const id = res.data.id
+          const id = res.data.id;
           axios
             .post(`${path}upload/item/${token}?id=${id}`, formData)
             .then(() => {
-                this.$swal
-                  .fire({
-                    position: "center",
-                    icon: "success",
-                    title: 'Berhasil',
-                    text: 'item berhasil ditambahkan',
-                    showConfirmButton: false,
-                    timer: 500,
-                  })
-                  .finally(() => this.isLoad = false)
-                  .then(() => {
-                    this.$router.push("/barang");
-                  });
+              this.$swal
+                .fire({
+                  position: "center",
+                  icon: "success",
+                  title: "Berhasil",
+                  text: "item berhasil ditambahkan",
+                  showConfirmButton: false,
+                  timer: 500,
+                })
+                .finally(() => (this.isLoad = false))
+                .then(() => {
+                  this.$router.push("/barang");
+                });
             })
             .catch((err) => {
               console.log(err);
             });
-
         });
     },
   },

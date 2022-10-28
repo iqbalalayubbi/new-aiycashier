@@ -164,7 +164,7 @@ export default {
     onTyping(e) {
       const key = e.key;
       const input = this.$refs.input
-      if (e.altKey && key == "p")this.clickPay()
+      if (e.altKey && key == "p") this.clickPay()
       if (e.ctrlKey && key == "i") input.focus();
       if (key == "Enter" && document.activeElement == input) {
         this.chooseItem = true;
@@ -230,6 +230,7 @@ export default {
       this.isPay = true;
     },
     clickPay() {
+      // cek table apakah ada barang
       if (this.dataTableItems.length == 0){
         this.$swal.fire({
             position: 'center',
@@ -239,8 +240,7 @@ export default {
             showConfirmButton: false,
             timer: 1500
         })
-      }
-      else if (this.dataTableItems.length > 0){
+      }else if(this.dataTableItems.length > 0){
         this.isPopup = true;
         this.isChoosePay = true;
         this.isPay = false;
