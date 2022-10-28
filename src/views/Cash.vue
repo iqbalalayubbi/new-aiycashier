@@ -39,7 +39,7 @@
         />
         
         <button
-          class="btn mt-20 w-3/4 lg:w-1/2 bg-color1 border-color1 hover:bg-color2 hover:border-color2 relative"
+          class="btn mt-20 xl:mt-16 w-3/4 lg:w-1/2 bg-color1 border-color1 hover:bg-color2 hover:border-color2 relative"
           @click="clickPay"
         >
           Bayar
