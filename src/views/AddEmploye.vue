@@ -98,7 +98,7 @@ export default {
         const ref = this.$refs;
         const username = ref.username.$refs.input.value;
         const password = ref.password.$refs.input.value;
-        const role = this.$refs.role.value;
+        const role = this.$refs.role.value.toLowerCase();
         const token = JSON.parse(localStorage.getItem("token"));
         this.$swal.fire({
           title: "Yakin Ingin Menambahkan Karyawan Ini?",
