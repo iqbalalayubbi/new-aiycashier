@@ -55,19 +55,19 @@
       <div class="flex w-[90%] lg:w-3/4 justify-center gap-5">
         <div class="w-1/2 lg:w-1/3 flex flex-col gap-3 mt-10">
           <Input
-            nama="nama Barang"
+            nama="Nama Barang"
             ref="nama"
             @onFocus="onFocus('nama')"
             @onInput="onInput"
           />
           <Input
-            nama="kategori"
+            nama="Kategori"
             ref="kategori"
             @onFocus="onFocus('kategori')"
             @onInput="onInput"
           />
           <Input
-            nama="satuan"
+            nama="Satuan"
             ref="satuan"
             @onFocus="onFocus('satuan')"
             @onInput="onInput"
@@ -75,19 +75,19 @@
         </div>
         <div class="w-1/2 lg:w-1/3 flex flex-col gap-3 mt-10">
           <Input
-            nama="modal"
+            nama="Modal"
             ref="modal"
             @onFocus="onFocus('modal')"
             @onInput="onInput"
           />
           <Input
-            nama="harga"
+            nama="Harga"
             ref="harga"
             @onFocus="onFocus('harga')"
             @onInput="onInput"
           />
           <Input
-            nama="stok"
+            nama="Stok"
             ref="stok"
             @onFocus="onFocus('stok')"
             @onInput="onInput"

@@ -35,9 +35,9 @@
       </div>
 
       <div class="w-3/4 lg:w-1/3 flex flex-col gap-3 mt-10">
-        <Input nama="nama toko" ref="nama" :val="shop.nama" />
-        <Input nama="pemilik" ref="admin" :val="shop.admin" />
-        <Input nama="alamat" ref="alamat" :val="shop.alamat" />
+        <Input nama="Nama Toko" ref="nama" :val="shop.nama" />
+        <Input nama="Pemilik" ref="admin" :val="shop.admin" />
+        <Input nama="Alamat" ref="alamat" :val="shop.alamat" />
         <button
           class="btn mt-5 xl:mt-3 w-full bg-color1 border-color1 hover:bg-color2 hover:border-color2"
           @click="updateShop"

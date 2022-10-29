@@ -7,8 +7,8 @@
       <h1 class="text-4xl font-bold mt-28">Ganti Password</h1>
 
       <div class="w-3/4 lg:w-1/3 flex flex-col gap-3 mt-10">
-        <Input nama="password lama" ref="lama" type="password"/>
-        <Input nama="password baru" ref="baru" type="password"/>
+        <Input nama="Password Lama" ref="lama" type="password"/>
+        <Input nama="Password Baru" ref="baru" type="password"/>
         <button
           class="btn mt-5 w-full bg-color1 border-color1 hover:bg-color2 hover:border-color2"
           @click="changePass"

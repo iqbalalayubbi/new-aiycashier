@@ -56,18 +56,18 @@
 
       <div class="flex w-[90%] lg:w-3/4 justify-center gap-5 lg:mt-0 mt-10">
         <div class="w-1/2 lg:w-1/3 flex flex-col gap-3 mt-10">
-          <Input nama="nama" ref="nama" :val="user.nama" @onInput="onInput" />
+          <Input nama="Nama" ref="nama" :val="user.nama" @onInput="onInput" />
           <Input
-            nama="username"
+            nama="Username"
             ref="username"
             :val="user.username"
             inputClass="bg-slate-300 border-none"
           />
         </div>
         <div class="w-1/2 lg:w-1/3 flex flex-col gap-3 mt-10">
-          <Input nama="no hp" ref="no_hp" :val="user.no_hp" />
+          <Input nama="No Hp" ref="no_hp" :val="user.no_hp" />
           <Input
-            nama="role"
+            nama="Role"
             ref="role"
             :val="user.role"
             inputClass="bg-slate-300 border-none"

@@ -31,9 +31,9 @@
         </div>
       </div>
       <div class="w-[90%] lg:w-1/3 flex flex-col gap-3 mt-10">
-        <Input nama="username" type="text" ref="username" @onInput="onInput" />
+        <Input nama="Username" type="text" ref="username" @onInput="onInput" />
         <Input
-          nama="password"
+          nama="Password"
           type="password"
           ref="password"
           @onInput="onInput"
@@ -42,9 +42,9 @@
           class="select border-color1 mt-3 focus:outline-color1"
           ref="role"
         >
-          <option disabled selected>kasir</option>
-          <option>kasir</option>
-          <option>pengelola</option>
+          <option disabled selected>Kasir</option>
+          <option>Kasir</option>
+          <option>Pengelola</option>
         </select>
         <button
           class="btn mt-5 w-full bg-color1 border-color1 hover:bg-color2 hover:border-color2"
